@@ -19,6 +19,10 @@ GO
 USE CinemaDB
 GO
 
+--user-defined data types
+CREATE TYPE passportType
+    FROM nvarchar(10) NOT NULL
+
 --starting creating tables
 
 ----general table count - 12
@@ -28,13 +32,13 @@ GO
 
 --collection of films
 CREATE TABLE dbo.Films (
-    FilmID tinyint(50) PRIMARY KEY, -- max 50 films at one time
+    FilmID tinyint PRIMARY KEY, -- max 50 films at one time
     FilmName nvarchar(30),
     ReleaseYear smallint,
     Director nvarchar(50),
     Duration smallint,
     Budget int,
-    Rating tinyint(10) CHECK (Rating > 5)
+    Rating tinyint CHECK (Rating > 5)
 )
 GO
 
@@ -42,29 +46,29 @@ GO
 CREATE TABLE dbo.EmployeePosition (
     PositionName nvarchar(20) PRIMARY KEY,
     Responsibilities nvarchar(100),
-    Rank tinyint(3), -- 1 - service staff ,2 - common employee, 3 - managment
+    EmployeeRank tinyint, -- 1 - service staff ,2 - common employee, 3 - managment
     Salary int
 )
 GO
 
 --employees
 CREATE TABLE dbo.Employees (
-    EmployeeID tinyint(255) PRIMARY KEY,
+    EmployeeID tinyint PRIMARY KEY,
     Position nvarchar(20) FOREIGN KEY REFERENCES EmployeePosition(PositionName),
     EmployeeName nvarchar(50),
-    Passport /**/ UNIQUE,
-    Expirience tinyint(64) DEFAULT 0
+    Passport passportType UNIQUE, -- create user type
+    Expirience tinyint DEFAULT 0
 )
 GO
 
 --advertising
 CREATE TABLE dbo.Advertising (
-    AdID tinyint(20) PRIMARY KEY,
-    SeanceId tinyint(200) FOREIGN KEY REFERENCES Seances(SeanceId),
-    Employee tinyint(255) FOREIGN KEY REFERENCES Employees(EmployeeID),
+    AdID tinyint PRIMARY KEY,
+    SeanceId tinyint FOREIGN KEY REFERENCES Seances(SeanceId),
+    Employee tinyint FOREIGN KEY REFERENCES Employees(EmployeeID),
     Advertiser tinyint FOREIGN KEY REFERENCES Advertisers(AdvertiserID),
     AdvertisingName nvarchar(20),
-    AdvertisingDuration tinyint(240) CHECK (AdvertisingDuration >= 60),
+    AdvertisingDuration tinyint CHECK (AdvertisingDuration >= 60),
     AdvertisingCost smallint CHECK (AdvertisingCost >= 5000)
 )
 GO
@@ -79,17 +83,17 @@ GO
 
 --cinemaholl
 CREATE TABLE dbo.CinemaHolls (
-    HollID tinyint(10) PRIMARY KEY,
-    3DEnable bit DEFAULT 0,
-    Seats tinyint(250)
+    HollID tinyint PRIMARY KEY,
+    TdEnable bit DEFAULT 0,
+    Seats tinyint
 )
 GO
 
 --EmployeeHoll
 CREATE TABLE dbo.EmployeeHoll (
-    HollID tinyint(10) FOREIGN KEY REFERENCES CinemaHolls(HollID),
-    EmployeeID tinyint(255) FOREIGN KEY REFERENCES Employees(EmployeeID),
-    StaffChangeTime tinyint(24) DEFAULT 5
+    HollID tinyint FOREIGN KEY REFERENCES CinemaHolls(HollID),
+    EmployeeID tinyint FOREIGN KEY REFERENCES Employees(EmployeeID),
+    StaffChangeTime tinyint DEFAULT 5
 )
 GO
 
@@ -97,7 +101,7 @@ GO
 CREATE TABLE dbo.TicketTypes (
     TypeName nvarchar(20) PRIMARY KEY,
     TypeDescription nvarchar(100),
-    Discount tinyint(100)
+    Discount tinyint
 )
 GO
 
@@ -105,30 +109,30 @@ GO
 CREATE TABLE dbo.Ticket (
     TicketID smallint PRIMARY KEY,
     TicketType nvarchar(20) FOREIGN KEY REFERENCES TicketTypes(TypeName),
-    CashboxID tinyint(4) FOREIGN KEY REFERENCES Cashboxes(CashboxID),
-    SeanceId tinyint(200) FOREIGN KEY REFERENCES Seances(SeanceId),
-    RowNumber tinyint(10),
-    SeatNumber tinyint(15),
-    Cost smallint(1000)
+    CashboxID tinyint FOREIGN KEY REFERENCES Cashboxes(CashboxID),
+    SeanceId tinyint FOREIGN KEY REFERENCES Seances(SeanceId),
+    RowNumber tinyint,
+    SeatNumber tinyint,
+    Cost smallint
 )
 GO
 
 --cashbox
 CREATE TABLE dbo.Cashboxes (
-    CashboxID tinyint(4) PRIMARY KEY,
-    EmployeeID tinyint(255) FOREIGN KEY REFERENCES Employees(EmployeeID), 
-    StaffChangeTime tinyint(24) DEFAULT 5,
-    WorkTime tinyint(24) DEFAULT 12
+    CashboxID tinyint PRIMARY KEY,
+    EmployeeID tinyint FOREIGN KEY REFERENCES Employees(EmployeeID), 
+    StaffChangeTime tinyint DEFAULT 5,
+    WorkTime tinyint DEFAULT 12
 )
 GO
 
 --seance
 CREATE TABLE dbo.Seances (
-    SeanceId tinyint(200) PRIMARY KEY,
-    FilmID tinyint(50) FOREIGN KEY REFERENCES Films(FilmID),
-    HollID tinyint(10) FOREIGN KEY REFERENCES CinemaHolls(HollID),
+    SeanceId tinyint PRIMARY KEY,
+    FilmID tinyint FOREIGN KEY REFERENCES Films(FilmID),
+    HollID tinyint FOREIGN KEY REFERENCES CinemaHolls(HollID),
     ShowTime datetime,
-    AgeRating tinyint(18),
+    AgeRating tinyint,
     SeanceType nvarchar(20) FOREIGN KEY REFERENCES SeanceTypes(TypeName)
 )
 GO
