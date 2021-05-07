@@ -1,0 +1,5 @@
+USE CinemaDB
+GO
+
+CREATE PROCEDURE InsertFilm
+    AS
