@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/styles.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="header-content">
+                <div class="header-logo">
+                    <a href="@Url.Action("Index", "Home")">
+                        <div class="logo">
+                            <img src="~/Content/img/logo.jpg" alt="logo">
+                        </div>
+                    </a>
+                    <span class="header-label">Фильмы</span>
+                </div>
+                <div class="header-advertising">
+                    <button>Вы рекламодатель?</button>
+                    <!-- modal -->
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <!-- items inside -->
+            @RenderBody()
+        </div>
+        <footer class="footer">
+            <div class="footer-logo">
+                <img src="~/Content/img/logo.jpg" alt="logo">
+            </div>
+            <div class="footer-contacts">
+                <span>Phone: 123-456-78-9</span>
+                <span>E-Mail: mail@@gmail.com</span>
+            </div>
+        </footer>
+    </div>
+@Scripts.Render("~/bundles/jquery")
+@RenderSection("scripts", required: false)
+</body>
+</html>
