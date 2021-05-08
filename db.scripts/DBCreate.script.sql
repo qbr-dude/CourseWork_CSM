@@ -10,7 +10,7 @@ CREATE DATABASE CinemaDB
     LOG ON ( 
         NAME = N'Cinema_log', 
         FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\DATA\Cinema_log.ldf' ,
-        SIZE = 8192KB , 
+        SIZE = 8192KB ,  
         FILEGROWTH = 65536KB 
     )
 GO
@@ -23,7 +23,9 @@ GO
 CREATE TYPE passportType
     FROM nvarchar(10) NOT NULL
 GO
-CREATE RULE passport_rule AS (len(@passport) = 10)
+CREATE RULE passport_rule AS (len(@passport) = 10);
+GO
+EXEC sp_bindrule 'passport_rule', 'passportType';
 GO
 --starting creating tables
 
@@ -41,14 +43,14 @@ CREATE TABLE dbo.Films (
     Duration smallint,
     Genre nvarchar(20),
     Rating float,
-    FilmImage nvarchar(255) DEFAULT '../default.jpg'
+    FilmImage nvarchar(255)
 )
 GO
 
 --employee's position
 CREATE TABLE dbo.EmployeePosition (
-    PositionName nvarchar(20) PRIMARY KEY,
-    Responsibilities nvarchar(100) NOT NULL,
+    PositionName nvarchar(30) PRIMARY KEY,
+    Responsibilities nvarchar(255) NOT NULL,
     EmployeeRank tinyint NOT NULL, -- 1 - service staff ,2 - common employee, 3 - managment
     Salary int NOT NULL
 )
@@ -57,10 +59,10 @@ GO
 --employees
 CREATE TABLE dbo.Employees (
     EmployeeID tinyint PRIMARY KEY IDENTITY(1, 1),
-    Position nvarchar(20) FOREIGN KEY REFERENCES EmployeePosition(PositionName),
+    Position nvarchar(30) FOREIGN KEY REFERENCES EmployeePosition(PositionName),
     EmployeeName nvarchar(50) NOT NULL,
     Passport passportType UNIQUE NOT NULL, -- create user type
-    Expirience tinyint DEFAULT 0
+    Expirience tinyint
 )
 GO
 
@@ -76,7 +78,8 @@ GO
 CREATE TABLE dbo.CinemaHolls (
     HollID tinyint PRIMARY KEY IDENTITY(1, 1),
     TdEnable bit DEFAULT 0,
-    Seats tinyint NOT NULL --max(10x20) - avr(10x15)
+    RowNumber tinyint NOT NULL,
+    SeatNumber tinyint NOT NULL--max(10x20) - avr(10x15)
 )
 GO
 
@@ -106,7 +109,7 @@ CREATE TABLE dbo.Advertising (
     Advertiser tinyint FOREIGN KEY REFERENCES Advertisers(AdvertiserID),
     AdvertisingName nvarchar(20) NOT NULL,
     AdvertisingDuration tinyint CHECK (AdvertisingDuration >= 60) NOT NULL,
-    AdvertisingCost smallint CHECK (AdvertisingCost >= 5000) NOT NULL
+    AdvertisingCost smallint NOT NULL
 )
 GO
 
@@ -114,7 +117,7 @@ GO
 CREATE TABLE dbo.EmployeeHoll (
     HollID tinyint FOREIGN KEY REFERENCES CinemaHolls(HollID),
     EmployeeID tinyint FOREIGN KEY REFERENCES Employees(EmployeeID),
-    StaffChangeTime tinyint DEFAULT 5
+    StaffChangeTime tinyint
 )
 GO
 
@@ -130,7 +133,7 @@ GO
 CREATE TABLE dbo.Cashboxes (
     CashboxID tinyint PRIMARY KEY IDENTITY(0, 1),
     EmployeeID tinyint FOREIGN KEY REFERENCES Employees(EmployeeID), 
-    StaffChangeTime tinyint DEFAULT 5,
+    StaffChangeTime tinyint,
     WorkTime tinyint DEFAULT 12
 )
 GO
@@ -142,13 +145,44 @@ CREATE TABLE dbo.Tickets (
     CashboxID tinyint FOREIGN KEY REFERENCES Cashboxes(CashboxID),
     SeanceId tinyint FOREIGN KEY REFERENCES Seances(SeanceId),
     RowNumber tinyint NOT NULL, --constraints!
-    SeatNumber tinyint NOT NULL,
+    SeatNumber tinyint CHECK(SeatNumber BETWEEN 0 AND 20) NOT NULL,
     Cost smallint NOT NULL
 )
 GO
 
 --constraints
+-- rules
+CREATE RULE rating_check AS (@rating BETWEEN 0 AND 10);
+GO
+EXEC sp_bindrule 'rating_check', 'Films.Rating';
+GO
 
+CREATE RULE ad_cost_check AS (@cost >= 5000);
+GO
+EXEC sp_bindrule 'ad_cost_check', 'Advertising.AdvertisingCost';
+GO
+
+CREATE RULE row_check AS (@row BETWEEN 0 AND 10);
+GO
+EXEC sp_bindrule 'row_check', 'Tickets.RowNumber';
+GO
+
+-- default
+CREATE DEFAULT expirience_default AS 0;
+GO
+EXEC sp_bindefault 'expirience_default', 'Employees.Expirience';
+GO
+
+CREATE DEFAULT staff_time_default AS 5;
+GO
+EXEC sp_bindefault 'staff_time_default', 'EmployeeHoll.StaffChangeTime';
+EXEC sp_bindefault 'staff_time_default', 'Cashboxes.StaffChangeTime';
+GO
+
+CREATE DEFAULT image_default AS 'default.jpg';
+GO
+EXEC sp_bindefault 'image_default', 'Films.FilmImage';
+GO
 
 -- filling in start tables
 
@@ -162,12 +196,12 @@ INSERT INTO Films VALUES
     ('Чужой', '22.06.1979', 'Р. Скотт', 117, 'Ужасы', 8.4, 'alien.jpg'),
     ('Валл-и', '27.06.2008', 'А. Стэнтон', 98, 'Анимационный', 8.4, 'walle.jpg'),
     ('Джокер', '04.10.2019', 'Т. Филлипс', 122, 'Драма', 8.4, 'joker.jpg'),
-    ('Мстители: Война бесконечности', '27.04.2018', 'Братья Руссо', 8.4, 'Боевик', 13, 'avengers.jpg'),
+    ('Мстители: Война бесконечности', '27.04.2018', 'Братья Руссо', 160, 'Боевик', 8.4, 'avengers.jpg'),
     ('Бешеные псы', '02.09.1992', 'К. Тарантино', 99, 'Криминал', 8.3, 'reservoirdogs.jpg')
 GO
 
 --employeePositions
-INSERT INTO EmployeePositions VALUES
+INSERT INTO EmployeePosition VALUES
     ('Администратор', 'Управляет кинотеатром. Нанимает персонал, ведет бухгалтерскую работу', 3, 120000),
     ('Менеджер по прокату', 'Управляет прокатом кинотеатра', 3, 80000),
     ('Менеджер по маркетингу', 'Управляет рекламой, продвижением кинотеатра. Работает с рекламодателями', 3, 90000),
@@ -191,7 +225,7 @@ GO
 
 --ticketTypes
 INSERT INTO TicketTypes VALUES
-    ('standart', 'билет без скидок'),
+    ('standart', 'билет без скидок', 0),
     ('child', 'детям до 6 включительно', 50),
     ('tuesday', 'акция на вечерние фильмы', 50)
 
@@ -211,18 +245,56 @@ GO
 
 --cinemaHolls
 INSERT INTO CinemaHolls VALUES
-    (1, 200),
-    (0, 150),
-    (1, 150),
-    (0, 150)
+    (1, 10, 20),
+    (0, 10, 15),
+    (1, 10, 15),
+    (0, 10, 15)
 GO
 
 --employeeHoll
 INSERT INTO EmployeeHoll VALUES 
-    (1, 7),
-    (2, 7),
-    (3, 7),
-    (4, 7)
+    (1, 7, 5),
+    (2, 7, 5),
+    (3, 7, 5),
+    (4, 7, 5)
+GO
+
+--seances
+INSERT INTO Seances VALUES
+    (1, 1, '15.05.2021 12:30', 16, 'common'),
+    (1, 2, '15.05.2021 13:30', 16, 'common'),
+    (1, 3, '15.05.2021 14:30', 16, 'common'),
+    (1, 4, '15.05.2021 15:30', 16, 'common'),
+    (5, 1, '16.05.2021 10:45', 6, 'common'),
+    (5, 2, '16.05.2021 12:45', 6, 'common'),
+    (5, 3, '16.05.2021 15:45', 6, 'common'),
+    (5, 4, '16.05.2021 16:45', 6, 'common'),
+    (6, 1, '15.05.2021 18:30', 18, 'limited'),
+    (6, 2, '15.05.2021 18:30', 18, 'limited'),
+    (6, 2, '15.05.2021 22:30', 18, 'limited'),
+    (6, 4, '15.05.2021 21:30', 18, 'limited'),
+    (7, 1, '17.05.2021 11:15', 6, 'school'),
+    (7, 2, '17.05.2021 11:15', 6, 'school'),
+    (7, 3, '17.05.2021 11:15', 6, 'school'),
+    (7, 4, '17.05.2021 11:15', 6, 'school'),
+    (10, 1, '17.05.2021 20:30', 18, 'common'),
+    (10, 2, '17.05.2021 21:45', 18, 'common'),
+    (10, 3, '17.05.2021 22:30', 18, 'common'),
+    (10, 4, '17.05.2021 18:15', 18, 'common'),
+    (2, 1, '16.05.2021 21:30', 16, 'limited'),
+    (9, 4, '16.05.2021 21:30', 16, 'common')
+GO
+
+--advertisers
+INSERT INTO Advertisers VALUES
+    ('С. Есенин', 'РГУ'),
+    ('А. Попов', 'РГРТУ') --resurrected
 GO
 
 --advertisings
+INSERT INTO Advertising VALUES
+    (1, 3, 2, 'radio', 100, 10000),
+    (5, 3, 2, 'radio', 100, 10000),
+    (10, 3, 1, 'tourism', 120, 15000),
+    (2, 3, 1, 'tourism', 120, 15000)
+GO

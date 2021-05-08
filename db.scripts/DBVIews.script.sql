@@ -19,3 +19,4 @@ SELECT Advertising.AdvertisingName, Films.FilmName, Advertisers.AdvertiserName, 
         INNER JOIN Films ON Seances.FilmID = Films.FilmID
         INNER JOIN Advertisers ON Advertising.Advertiser = Advertiser.AdvertiserID
         INNER JOIN Employees on Advertising.Employee = Employees.EmployeeID
+GO
