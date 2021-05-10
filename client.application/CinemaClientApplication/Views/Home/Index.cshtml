@@ -1,21 +1,27 @@
-﻿@Model
-
-@{
+﻿@{
     ViewBag.Title = "КиноТеатр";
 }
 
 <div class="films-area">
-    @foreach (var item in collection)
-    { 
+    @foreach (var item in Model)
+    {
         <div class="film-item">
             <div class="film-logo">
-
+                <img src="~/Content/img/films.img/@item.FilmImage" alt="Alternate Text" />
             </div>
             <div class="film-label">
-
+                <span>@item.FilmName</span>
+                <div class="film-short-info">
+                    <div class="film-director">
+                        <span>Режиссер:</span> <span>@item.Director</span>
+                    </div>
+                    <div class="film-director">
+                        <span>Жанр: </span> <span>@item.Genre</span>
+                    </div>
+                </div>
             </div>
-            <div class="buy-button">
-
+            <div class="film-button">
+                @Html.ActionLink("Перейти к сеансам", "FilmInfo", "Home", new { id = @item.FilmID }, new {@class = "button"})
             </div>
         </div>
     }

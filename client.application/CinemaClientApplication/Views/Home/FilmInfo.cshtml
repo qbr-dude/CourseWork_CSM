@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "FilmInfo";
+}
+
+<div class="film-area">
+    <div class="image">
+        <img src="~/Content/img/films.img/@Model.Film.FilmImage" alt="Alternate Text" />
+    </div>
+    <div class="info">
+        <div class="label">
+            <span>@Model.Film.FilmName</span>
+        </div>
+        <div class="info-table">
+            <div><span>Год выхода: </span><span> @Model.Film.ReleaseYear.ToString("dd/MM/yyyy")</span></div>
+            <div><span>Режиссер: </span><span> @Model.Film.Director</span></div>
+            <div><span>Длительность фильма: </span><span> @Model.Film.Duration</span></div>
+            <div><span>Жанр: </span><span> @Model.Film.Genre</span></div>
+            <div><span>Рейтинг (IMDb): </span><span> @Model.Film.Rating</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="seances-area">
+    @foreach (var seance in Model.Seances)
+    {
+        <div class="seance-time">
+            <span>@seance.ShowTime</span>
+        </div>
+        <div class="seance-button">
+            @Html.ActionLink("Перейти к сеансу", "SeanceTickets", "Home", new { id = @seance.SeanceId }, new { @class = "button" })
+        </div>
+    }
+</div>

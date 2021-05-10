@@ -23,7 +23,7 @@ GO
 CREATE TYPE passportType
     FROM nvarchar(10) NOT NULL
 GO
-CREATE RULE passport_rule AS (len(@passport) = 10);
+CREATE RULE passport_rule AS (len(@passport) = 10 AND ISNUMERIC(@passport));
 GO
 EXEC sp_bindrule 'passport_rule', 'passportType';
 GO

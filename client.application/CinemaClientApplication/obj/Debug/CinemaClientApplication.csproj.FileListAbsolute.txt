@@ -79,8 +79,14 @@ C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplicati
 C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\bin\ru\System.Web.WebPages.resources.dll
 C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\bin\ru\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\bin\ru\System.Web.WebPages.Razor.resources.dll
-C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\obj\Debug\CinemaClientApplication.csprojAssemblyReference.cache
 C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\obj\Debug\CinemaClientApplication.csproj.CoreCompileInputs.cache
 C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\obj\Debug\CinemaClientApplication.csproj.CopyComplete
 C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\obj\Debug\CinemaClientApplication.dll
 C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\obj\Debug\CinemaClientApplication.pdb
+C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\bin\DAL.Department.dll
+C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\bin\Entities.dll
+C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\bin\DAL.Department.pdb
+C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\bin\DAL.Department.dll.config
+C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\bin\Entities.pdb
+C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\bin\Entities.dll.config
+C:\Users\Dmitriy\Desktop\CourseWork_CSM\client.application\CinemaClientApplication\obj\Debug\CinemaClientApplication.csprojAssemblyReference.cache

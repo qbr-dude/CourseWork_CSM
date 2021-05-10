@@ -90,40 +90,64 @@ GO
 -- END
 -- exec InsertAdvertising 6, 3, 3, 'some', 200, 4000
 -- ticket
-CREATE PROCEDURE CreateTicket (@SeanceId tinyint, @TypeName nvarchar(20), @CashboxID tinyint, @RowNumber tinyint, @SeatNumber tinyint, @Cost smallint)
-    AS
-BEGIN
-    IF NOT EXISTS(SELECT SeanceId FROM Seances WHERE SeanceId = @SeanceId)
-    BEGIN
-        PRINT 'No such seance!'
-        RETURN -2
-    END
-    IF NOT EXISTS(SELECT TypeName FROM TicketTypes WHERE TypeName = @TypeName)
-    BEGIN
-        PRINT 'No such ticket type!'
-        RETURN -2
-    END
-    IF NOT EXISTS(SELECT CashboxID FROM Cashboxes WHERE CashboxID = @CashboxID)
-     BEGIN
-        PRINT 'No such cashbox!'
-        RETURN -2
-    END
+--CREATE PROCEDURE CreateTicket (@SeanceId tinyint, @TypeName nvarchar(20), @CashboxID tinyint, @RowNumber tinyint, @SeatNumber tinyint, @Cost smallint)
+--    AS
+--BEGIN
+--    IF NOT EXISTS(SELECT SeanceId FROM Seances WHERE SeanceId = @SeanceId)
+--    BEGIN
+--        PRINT 'No such seance!'
+--        RETURN -2
+--    END
+--    IF NOT EXISTS(SELECT TypeName FROM TicketTypes WHERE TypeName = @TypeName)
+--    BEGIN
+--        PRINT 'No such ticket type!'
+--        RETURN -2
+--    END
+--    IF NOT EXISTS(SELECT CashboxID FROM Cashboxes WHERE CashboxID = @CashboxID)
+--     BEGIN
+--        PRINT 'No such cashbox!'
+--        RETURN -2
+--    END
 
-    IF EXISTS(SELECT SeanceId, RowNumber, SeatNumber
-                FROM Tickets
-                    WHERE SeanceId = @SeanceId and RowNumber = @RowNumber and SeatNumber = @SeatNumber)
-    BEGIN
-        PRINT 'This seat is already taken!';
-        RETURN -1;
-    END
+--    IF EXISTS(SELECT SeanceId, RowNumber, SeatNumber
+--                FROM Tickets
+--                    WHERE SeanceId = @SeanceId and RowNumber = @RowNumber and SeatNumber = @SeatNumber)
+--    BEGIN
+--        PRINT 'This seat is already taken!';
+--        RETURN -1;
+--    END
 
-    INSERT INTO Tickets
-        VALUES(@TypeName, @CashboxID, @SeanceId, @RowNumber, @SeatNumber, @Cost);
-    RETURN 0
-END
-exec CreateTicket 1, 'standart', 0, 9, 15, 200
+--    INSERT INTO Tickets
+--        VALUES(@TypeName, @CashboxID, @SeanceId, @RowNumber, @SeatNumber, @Cost);
+--    RETURN 0
+--END
+--exec CreateTicket 1, 'standart', 0, 9, 15, 200
 -- IF NOT EXISTS(SELECT  FROM  WHERE  = @)
 --     BEGIN
 --         PRINT '!'
 --         RETURN -2
 --     END
+
+--CREATE PROCEDURE GetAllFilms
+--    AS
+--BEGIN
+--    SELECT* FROM Films
+--END
+
+--CREATE PROCEDURE GetTicketsForSeance (@seance tinyint)
+--    AS
+--BEGIN
+--    SELECT* FROM Tickets WHERE SeanceID = @seance
+--END
+
+-- CREATE PROCEDURE GetSeanceInfo (@seance tinyint)
+--     AS
+-- BEGIN
+--     SELECT* FROM Seances WHERE SeanceID = @seance
+-- END
+
+CREATE PROCEDURE GetFilmById (@film tinyint)
+    AS
+BEGIN
+    SELECT* FROM Films WHERE FilmID = @film
+END
