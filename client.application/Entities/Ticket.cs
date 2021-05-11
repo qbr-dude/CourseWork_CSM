@@ -8,6 +8,7 @@ namespace Entities
 {
     public class Ticket
     {
+        public static int LastId { private set; get; }
         public int TicketID { private set; get; }
         public string TicketType { private set; get; }
         public int CashboxID { private set; get; }
@@ -17,7 +18,7 @@ namespace Entities
         public int Cost { private set; get; }
         public Ticket(int id, string type, int cashId, int seanceId, int row, int seat, int cost)
         {
-            TicketID = id;
+            TicketID = LastId = id;
             TicketType = type;
             CashboxID = cashId;
             SeanceId = seanceId;

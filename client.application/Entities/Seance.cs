@@ -14,8 +14,9 @@ namespace Entities
         public DateTime ShowTime { private set; get; }
         public int AgeRating { private set; get; }
         public string SeanceType { private set; get; }
+        public int TicketCost { private set; get; }
 
-        public Seance(int id, int filmID, int hollID, DateTime time, int rating, string type)
+        public Seance(int id, int filmID, int hollID, DateTime time, int rating, string type, int cost)
         {
             SeanceId = id;
             FilmID = filmID;
@@ -23,6 +24,7 @@ namespace Entities
             ShowTime = time;
             AgeRating = rating;
             SeanceType = type;
+            TicketCost = cost;
         }
     }
 }

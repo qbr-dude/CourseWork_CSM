@@ -1,0 +1,53 @@
+﻿@using Newtonsoft.Json;
+@{
+    ViewBag.Title = "SeanceSeats";
+}
+
+<script>
+    let lockedSeats = [];
+    let selectedTickets = [];
+    let ticketCost = @Model.Seance.TicketCost;
+    let seanceId = @Model.Seance.SeanceId;
+    let seatPlace;
+    function LockSeats(row, seat) {
+        let str = row + '-' + seat;
+        seat = document.querySelector(`img[alt = "${str}"]`);
+        console.log(seat);
+        $(seat).css({ 'opacity': 1, 'cursor': 'default' });
+        lockedSeats.push(str);
+    }
+</script>
+<div class="seance-info">
+    <div><span>Время показа: &nbsp;</span><span>@Model.Seance.ShowTime</span></div>
+    <div><span>Номер зала: &nbsp;</span><span>@Model.Holl.HollID</span></div>
+    @if (Model.Holl.TdEnable)
+    {<div><span>Сеанс в 3D</span></div>}
+    <div><span>Стоимость билета: &nbsp;</span><span>@Model.Seance.TicketCost рублей</span></div>
+</div>
+
+<div class="seats-handler">
+    <div><span>Количество выбранных мест: &nbsp;</span> <span class="seats-count"></span></div>
+    <div><span>Общая стоимость: &nbsp;</span> <span class="ticket-cost"></span></div>
+    <div><button>Заказать билеты</button></div>
+</div>
+<div class="seats-area">
+    @for (int i = 0; i < Model.Holl.RowNumber; i++)
+    {
+        <div class="seat-row">
+            @for (int j = 0; j < Model.Holl.SeatNumber; j++)
+            {
+                <div class="seat">
+                    <img src="~/Content/img/seat.svg" alt="@(i+1)-@(j+1)" />
+                </div>
+            }
+        </div>
+    }
+</div>
+<div class="script-area">
+    @foreach (var ticket in Model.Tickets)
+    {
+        int row = ticket.RowNumber;
+        int seat = ticket.SeatNumber;
+        <script>LockSeats(@(row+1), @(seat+1));</script>
+    }
+</div> 

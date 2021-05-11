@@ -134,7 +134,7 @@
     border: none;
 }
 .film-button .button:hover {
-    background-color: #cd322d;
+    background-color: #f6974e;
 }
 
 /*another page*/
@@ -144,6 +144,7 @@
 }
 
 .film-area .image {
+    display: flex;
     width: 400px;
     height: 500px;
 }
@@ -170,6 +171,90 @@
     margin-bottom: 25px;
     font-size: 20px;
 }
-    .film-area .info-table div span:last-child {
-        color: #f6974c;
-    }
+.film-area .info-table div span:last-child {
+    color: #f6974c;
+}
+.no-seances {
+    font-size: 30px;
+}
+.seances-area {
+    margin-top: 50px;
+}
+.seance-item {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 25px;
+}
+.seance-time {
+    font-size: 30px;
+    color: #f6974e;
+}
+.seance-button {
+    display: flex;
+}
+.seance-button .button {
+    background-color: #fff;
+    color: black;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 10px 35px;
+    border-radius: 15px;
+    border: none;
+}
+.seance-button .button:hover {
+    background-color: #f6974e;
+}
+
+/*seats*/
+.seats-area {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+.seat-row {
+    display: flex;
+}
+.seat {
+    cursor: pointer;
+    display: flex;
+    width: 50px;
+    height: 50px;
+    margin: 3px 5px;
+}
+.seat:hover {
+    outline: 2px solid #f6974c;
+}
+.seat img {
+    opacity: .5;
+    width: 100%;
+    height: 100%;
+}
+.seance-info {
+    display: flex;
+    margin-bottom: 50px;
+}
+.seance-info div, .seats-handler div {
+    margin-right: 50px;
+    font-size: 30px;
+    color: white;
+}
+.seats-handler div {
+    width: 35%;
+}
+.seance-info div span:last-child, .seats-handler div span:last-child {
+    color: #f6974e;
+}
+.seats-handler {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+    transition: height .2s;
+}
+.seats-handler button {
+    cursor: pointer;    
+    padding: 10px 35px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+}

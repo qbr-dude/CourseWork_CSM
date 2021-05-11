@@ -3,13 +3,13 @@ USE master
 CREATE DATABASE CinemaDB
     ON  PRIMARY ( 
         NAME = N'Cinema', 
-        FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\DATA\Cinema.mdf' , 
+        FILENAME = N'D:\CinemaDB\Cinema.mdf' , 
         SIZE = 8192KB , 
         FILEGROWTH = 65536KB 
     )
     LOG ON ( 
         NAME = N'Cinema_log', 
-        FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\DATA\Cinema_log.ldf' ,
+        FILENAME = N'D:\CinemaDB\Cinema_log.ldf' ,
         SIZE = 8192KB ,  
         FILEGROWTH = 65536KB 
     )
@@ -23,7 +23,7 @@ GO
 CREATE TYPE passportType
     FROM nvarchar(10) NOT NULL
 GO
-CREATE RULE passport_rule AS (len(@passport) = 10 AND ISNUMERIC(@passport));
+CREATE RULE passport_rule AS (len(@passport) = 10);
 GO
 EXEC sp_bindrule 'passport_rule', 'passportType';
 GO
@@ -97,7 +97,8 @@ CREATE TABLE dbo.Seances (
     HollID tinyint FOREIGN KEY REFERENCES CinemaHolls(HollID),
     ShowTime datetime NOT NULL, -- starting
     AgeRating tinyint,
-    SeanceType nvarchar(20) FOREIGN KEY REFERENCES SeanceTypes(TypeName)
+    SeanceType nvarchar(20) FOREIGN KEY REFERENCES SeanceTypes(TypeName), 
+    TicketCost tinyint NOT NULL
 )
 GO
 
@@ -261,28 +262,28 @@ GO
 
 --seances
 INSERT INTO Seances VALUES
-    (1, 1, '15.05.2021 12:30', 16, 'common'),
-    (1, 2, '15.05.2021 13:30', 16, 'common'),
-    (1, 3, '15.05.2021 14:30', 16, 'common'),
-    (1, 4, '15.05.2021 15:30', 16, 'common'),
-    (5, 1, '16.05.2021 10:45', 6, 'common'),
-    (5, 2, '16.05.2021 12:45', 6, 'common'),
-    (5, 3, '16.05.2021 15:45', 6, 'common'),
-    (5, 4, '16.05.2021 16:45', 6, 'common'),
-    (6, 1, '15.05.2021 18:30', 18, 'limited'),
-    (6, 2, '15.05.2021 18:30', 18, 'limited'),
-    (6, 2, '15.05.2021 22:30', 18, 'limited'),
-    (6, 4, '15.05.2021 21:30', 18, 'limited'),
-    (7, 1, '17.05.2021 11:15', 6, 'school'),
-    (7, 2, '17.05.2021 11:15', 6, 'school'),
-    (7, 3, '17.05.2021 11:15', 6, 'school'),
-    (7, 4, '17.05.2021 11:15', 6, 'school'),
-    (10, 1, '17.05.2021 20:30', 18, 'common'),
-    (10, 2, '17.05.2021 21:45', 18, 'common'),
-    (10, 3, '17.05.2021 22:30', 18, 'common'),
-    (10, 4, '17.05.2021 18:15', 18, 'common'),
-    (2, 1, '16.05.2021 21:30', 16, 'limited'),
-    (9, 4, '16.05.2021 21:30', 16, 'common')
+    (1, 1, '15.05.2021 12:30', 16, 'common', 200),
+    (1, 2, '15.05.2021 13:30', 16, 'common', 200),
+    (1, 3, '15.05.2021 14:30', 16, 'common', 200),
+    (1, 4, '15.05.2021 15:30', 16, 'common', 200),
+    (5, 1, '16.05.2021 10:45', 6, 'common', 200),
+    (5, 2, '16.05.2021 12:45', 6, 'common', 200),
+    (5, 3, '16.05.2021 15:45', 6, 'common', 200),
+    (5, 4, '16.05.2021 16:45', 6, 'common', 200),
+    (6, 1, '15.05.2021 18:30', 18, 'limited', 200),
+    (6, 2, '15.05.2021 18:30', 18, 'limited', 200),
+    (6, 2, '15.05.2021 22:30', 18, 'limited', 200),
+    (6, 4, '15.05.2021 21:30', 18, 'limited', 200),
+    (7, 1, '17.05.2021 11:15', 6, 'school', 200),
+    (7, 2, '17.05.2021 11:15', 6, 'school', 200),
+    (7, 3, '17.05.2021 11:15', 6, 'school', 200),
+    (7, 4, '17.05.2021 11:15', 6, 'school', 200),
+    (10, 1, '17.05.2021 20:30', 18, 'common', 200),
+    (10, 2, '17.05.2021 21:45', 18, 'common', 200),
+    (10, 3, '17.05.2021 22:30', 18, 'common', 200),
+    (10, 4, '17.05.2021 18:15', 18, 'common', 200),
+    (2, 1, '16.05.2021 21:30', 16, 'limited', 200),
+    (9, 4, '16.05.2021 21:30', 16, 'common', 200)
 GO
 
 --advertisers

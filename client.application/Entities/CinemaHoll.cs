@@ -13,10 +13,10 @@ namespace Entities
         public int RowNumber { private set; get; }
         public int SeatNumber { private set; get; }
 
-        public CinemaHoll(int id, int td, int rows, int seats)
+        public CinemaHoll(int id, bool td, int rows, int seats)
         {
             HollID = id;
-            TdEnable = Convert.ToBoolean(td);
+            TdEnable = td;
             RowNumber = rows;
             SeatNumber = seats;
         }

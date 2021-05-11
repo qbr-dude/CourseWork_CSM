@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace DAL.Department
 {
     class DBAccess
     {
-        public static SqlConnection SetDBConnection(string datasourse, string database, string user)
+        public static SqlConnection SetDBConnection(string configString)
         {
-            string connectionString = @"Data Source = " + datasourse + ";Initial Catalog = " + database + ";Integrated Security=SSPI;";
+            string connectionString = configString;
             return new SqlConnection(connectionString);
         }
 
         public static SqlConnection GetDBConnection()
         {
-            string datasourse = @"QBR_DUDE\SQLEXPRESS";
-            string database = "CinemaDB";
-            string user = @"QBR_DUDE\Dmitriy";
-
-            SqlConnection sqlConnection = SetDBConnection(datasourse, database, user);
+            string configurationString = ConfigurationManager.ConnectionStrings["CinemaDB"].ConnectionString;
+            SqlConnection sqlConnection = SetDBConnection(configurationString);
             sqlConnection.StateChange += SqlConnection_StateChange;
-            return SetDBConnection(datasourse, database, user);
+            return SetDBConnection(configurationString);
         }
 
         private static void SqlConnection_StateChange(object sender, System.Data.StateChangeEventArgs e)
