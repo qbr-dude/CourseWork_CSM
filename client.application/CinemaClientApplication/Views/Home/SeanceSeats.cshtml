@@ -12,7 +12,6 @@
     function LockSeats(row, seat) {
         let str = row + '-' + seat;
         seat = document.querySelector(`img[alt = "${str}"]`);
-        console.log(seat);
         $(seat).css({ 'opacity': 1, 'cursor': 'default' });
         lockedSeats.push(str);
     }
@@ -21,14 +20,14 @@
     <div><span>Время показа: &nbsp;</span><span>@Model.Seance.ShowTime</span></div>
     <div><span>Номер зала: &nbsp;</span><span>@Model.Holl.HollID</span></div>
     @if (Model.Holl.TdEnable)
-    {<div><span>Сеанс в 3D</span></div>}
+    {<div><span style="text-decoration: underline">Сеанс в 3D</span></div>}
     <div><span>Стоимость билета: &nbsp;</span><span>@Model.Seance.TicketCost рублей</span></div>
 </div>
 
 <div class="seats-handler">
     <div><span>Количество выбранных мест: &nbsp;</span> <span class="seats-count"></span></div>
     <div><span>Общая стоимость: &nbsp;</span> <span class="ticket-cost"></span></div>
-    <div><button>Заказать билеты</button></div>
+    <div><button disabled>Заказать билеты</button></div>
 </div>
 <div class="seats-area">
     @for (int i = 0; i < Model.Holl.RowNumber; i++)
@@ -48,6 +47,8 @@
     {
         int row = ticket.RowNumber;
         int seat = ticket.SeatNumber;
-        <script>LockSeats(@(row+1), @(seat+1));</script>
+    <script>
+            LockSeats(@(row), @(seat));
+    </script>
     }
 </div> 

@@ -55,7 +55,8 @@ namespace CinemaClientApplication.Controllers
             }
 
             requestDAO.CreateTickets(ticketsInfo);
-            return RedirectToAction("Home/Index");
+
+            return RedirectToAction("Index");
         }
     }
 }

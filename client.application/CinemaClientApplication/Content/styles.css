@@ -176,9 +176,12 @@
 }
 .no-seances {
     font-size: 30px;
+    margin-left: 100px;
+    color: #f6974c;
 }
 .seances-area {
     margin-top: 50px;
+    margin-bottom: 25px;
 }
 .seance-item {
     display: flex;
@@ -226,7 +229,7 @@
     outline: 2px solid #f6974c;
 }
 .seat img {
-    opacity: .5;
+    opacity: .4;
     width: 100%;
     height: 100%;
 }
@@ -252,9 +255,10 @@
     transition: height .2s;
 }
 .seats-handler button {
-    cursor: pointer;    
+    opacity: .5;
     padding: 10px 35px;
     font-size: 20px;
     border: none;
     border-radius: 5px;
+    transition: all .1s;
 }
