@@ -3,6 +3,8 @@
     padding: 0;
     text-decoration: none;
 }
+body {
+}
 
 .wrapper {
     background-color: #1e4860e3;
@@ -261,4 +263,14 @@
     border: none;
     border-radius: 5px;
     transition: all .1s;
+}
+.tickets-ordered {
+    position: absolute;
+    top: -100%;
+    right: 100px;
+    padding: 50px;
+    background-color: #f6974c;
+    border-radius: 25px;
+    box-shadow: 5px 5px 10px black;
+    transition: all .3s;
 }

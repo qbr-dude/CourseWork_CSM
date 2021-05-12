@@ -21,8 +21,12 @@
                 </div>
             </div>
             <div class="film-button">
-                @Html.ActionLink("Перейти к сеансам", "FilmInfo", "Home", new { id = @item.FilmID }, new {@class = "button"})
+                @Html.ActionLink("Перейти к сеансам", "FilmInfo", "Home", new { id = @item.FilmID }, new { @class = "button" })
             </div>
         </div>
     }
+</div>
+
+<div class="tickets-ordered">
+    <span>Ваши билеты были зарезервированы</span>
 </div>

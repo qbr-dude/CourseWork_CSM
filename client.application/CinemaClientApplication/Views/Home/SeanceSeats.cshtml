@@ -9,6 +9,7 @@
     let ticketCost = @Model.Seance.TicketCost;
     let seanceId = @Model.Seance.SeanceId;
     let seatPlace;
+    let ticketsOrdered;
     function LockSeats(row, seat) {
         let str = row + '-' + seat;
         seat = document.querySelector(`img[alt = "${str}"]`);

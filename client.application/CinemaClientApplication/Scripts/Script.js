@@ -1,4 +1,8 @@
 ﻿$(document).ready(function () {
+    //$('.films-area').on("load", function () {
+    //    if (ticketsOrdered)
+    //        ShowOrdered();
+    //});
     $('.seance-button').hover(function () {
         $(this).siblings('.seance-time').css('text-decoration', 'underline');
     }, function () {
@@ -37,7 +41,7 @@
             $('.seats-handler > div > button').css({ 'opacity': .5, 'cursor': 'default' });
         }
     }
-    $(".seats-handler button").on("click", function () {
+    $(".seats-handler button").on("click", ticketOrdered = function () {
         let dataRow = [];
         for (var i = 0; i < selectedTickets.length; i++) {
             dataRow.push(seanceId + '-' + selectedTickets[i] + '-' + ticketCost);
@@ -55,4 +59,11 @@
             }
         });
     });
+    //function ShowOrdered() {
+    //    console.log("here");
+    //    $('.tickets-ordered').css('top', '100px');
+    //    setTimeout(function () {
+    //        $('.tickets-ordered').css('top', '-100%');
+    //    }, 2000);
+    //}
 });

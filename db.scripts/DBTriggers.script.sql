@@ -72,3 +72,34 @@ AS
 	CLOSE advertising_cursor;
 	DEALLOCATE advertising_cursor;
 GO
+
+--checking seance show time (comparing show time and film duration)
+--how is works: get last time in holl and check inserting and its time
+CREATE TRIGGER dbo.CheckingSeanceShowTime ON Seances
+	AFTER insert
+AS
+	DECLARE @seanceID tinyint, @HollID tinyint, @FilmID tinyint, @insert_time datetime, @closest_time datetime;
+	DECLARE showtime_cursor CURSOR SCROLL
+		FOR SELECT SeanceId, HollID, FilmID, ShowTime FROM inserted;
+	OPEN showtime_cursor;
+	FETCH FIRST FROM showtime_cursor
+		INTO @seanceID, @HollID, @FilmID, @insert_time;
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		DECLARE @film_duration smallint;
+		SET @closest_time = (SELECT TOP(1) ShowTime FROM Seances WHERE HollID = @HollID ORDER BY ShowTime DESC);
+		SELECT @film_duration = Duration FROM Films WHERE FilmID = @FilmID;
+		IF CONVERT(date, @closest_time) > CONVERT(date, @insert_time) OR (CONVERT(date, @closest_time) = CONVERT(date, @insert_time) AND DATEDIFF(MINUTE, DATEADD(DAY, DATEDIFF(DAY, 0, @closest_time), 0), @closest_time) > DATEDIFF(MINUTE, DATEADD(DAY, DATEDIFF(DAY, 0, @insert_time), 0), @insert_time)) 
+			INSERT INTO Seances SELECT FilmID, HollID, ShowTime, AgeRating, SeanceType, TicketCost FROM inserted WHERE SeanceId = @seanceID;
+		ELSE
+			PRINT 'error!!!!';
+		FETCH NEXT FROM showtime_cursor
+			INTO @seanceID, @HollID, @FilmID, @insert_time;
+	END
+	CLOSE showtime_cursor;
+	DEALLOCATE showtime_cursor;
+GO
+
+DECLARE @dt datetime 
+SET @dt = '01-01-2001 07:10:20'
+SELECT DATEDIFF(MINUTE, DATEADD(DAY, DATEDIFF(DAY, 0, @dt), 0), @dt)

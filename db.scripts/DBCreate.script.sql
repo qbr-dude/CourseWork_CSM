@@ -109,7 +109,7 @@ CREATE TABLE dbo.Advertising (
     Employee tinyint FOREIGN KEY REFERENCES Employees(EmployeeID),
     Advertiser tinyint FOREIGN KEY REFERENCES Advertisers(AdvertiserID),
     AdvertisingName nvarchar(20) NOT NULL,
-    AdvertisingDuration tinyint CHECK (AdvertisingDuration >= 60) NOT NULL,
+    AdvertisingDuration tinyint CHECK (AdvertisingDuration <= 180) NOT NULL,
     AdvertisingCost smallint NOT NULL
 )
 GO
