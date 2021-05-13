@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Advertiser.cs" />
     <Compile Include="Advertising.cs" />
+    <Compile Include="AdvertisingSeance.cs" />
     <Compile Include="Cashbox.cs" />
     <Compile Include="CinemaHoll.cs" />
     <Compile Include="Employee.cs" />

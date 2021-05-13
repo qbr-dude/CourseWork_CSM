@@ -62,7 +62,7 @@ CREATE TABLE dbo.Employees (
     Position nvarchar(30) FOREIGN KEY REFERENCES EmployeePosition(PositionName),
     EmployeeName nvarchar(50) NOT NULL,
     Passport passportType UNIQUE NOT NULL, -- create user type
-    Expirience tinyint
+    Experience tinyint
 )
 GO
 
@@ -105,7 +105,6 @@ GO
 --advertising
 CREATE TABLE dbo.Advertising (
     AdID tinyint PRIMARY KEY IDENTITY(1, 1),
-    SeanceId tinyint FOREIGN KEY REFERENCES Seances(SeanceId),
     Employee tinyint FOREIGN KEY REFERENCES Employees(EmployeeID),
     Advertiser tinyint FOREIGN KEY REFERENCES Advertisers(AdvertiserID),
     AdvertisingName nvarchar(20) NOT NULL,
@@ -114,6 +113,10 @@ CREATE TABLE dbo.Advertising (
 )
 GO
 
+CREATE TABLE dbo.AdvertisingSeance (
+    SeanceId tinyint FOREIGN KEY REFERENCES Seances(SeanceId),
+    AdID tinyint FOREIGN KEY REFERENCES Advertising(AdID)
+)
 --EmployeeHoll
 CREATE TABLE dbo.EmployeeHoll (
     HollID tinyint FOREIGN KEY REFERENCES CinemaHolls(HollID),

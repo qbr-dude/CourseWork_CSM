@@ -90,14 +90,9 @@ GO
  GO
 --  exec InsertAdvertiser 'Р. Кирилин', 'ПоЛИтех'
 --  advertising
- CREATE PROCEDURE InsertAdvertising (@SeanceId tinyint, @Employee tinyint, @Advertiser tinyint, @AdvertisingName nvarchar(20), @AdvertisingDuration tinyint, @AdvertisingCost smallint)
+ CREATE PROCEDURE InsertAdvertising (@Employee tinyint, @Advertiser tinyint, @AdvertisingName nvarchar(20), @AdvertisingDuration tinyint, @AdvertisingCost smallint)
     AS
  BEGIN
-    IF NOT EXISTS(SELECT SeanceId FROM Seances WHERE SeanceId = @SeanceId)
-    BEGIN
-        PRINT 'No such seance!'
-        RETURN -2
-    END
     IF NOT EXISTS(SELECT EmployeeID, EmployeeRank FROM Employees INNER JOIN EmployeePosition ON Employees.Position = EmployeePosition.PositionName WHERE EmployeeID = @Employee AND EmployeeRank = 3)
     BEGIN
         PRINT 'No such employee or his rank is not suitable!'
@@ -108,16 +103,16 @@ GO
         PRINT 'Unknown advertiser!'
         RETURN -2
     END
-    IF EXISTS(SELECT SeanceId, Advertiser, AdvertisingName
+    IF EXISTS(SELECT Advertiser, AdvertisingName
                 FROM Advertising
-                    WHERE SeanceId = @SeanceId and Advertiser = @Advertiser and AdvertisingName = @AdvertisingName)
+                    WHERE Advertiser = @Advertiser and AdvertisingName = @AdvertisingName)
     BEGIN
         PRINT 'Such advertising is already rolling!';
         RETURN -1;
     END
 
     INSERT INTO Advertising
-        VALUES(@SeanceId, @Employee, @Advertiser, @AdvertisingName, @AdvertisingDuration, @AdvertisingCost);
+        VALUES(@Employee, @Advertiser, @AdvertisingName, @AdvertisingDuration, @AdvertisingCost);
     RETURN 0
  END
  GO
