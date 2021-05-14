@@ -52,18 +52,21 @@
             type: "POST",
             data: { tickets: data },
             success: function () {
-                window.location = "../Index";
+                ShowOrdered();
+                //window.location = "../Index";
             }, 
             error: function () {
                 console.log(data);
             }
         });
     });
-    //function ShowOrdered() {
-    //    console.log("here");
-    //    $('.tickets-ordered').css('top', '100px');
-    //    setTimeout(function () {
-    //        $('.tickets-ordered').css('top', '-100%');
-    //    }, 2000);
-    //}
+    function ShowOrdered() {
+        console.log("here");
+        $('.wrapper').css('z-index', -1);
+        $('.ordered-active').css('visibility', 'visible');
+        //$('.tickets-ordered').css('top', '100px');
+        //setTimeout(function () {
+        //    $('.tickets-ordered').css('top', '-100%');
+        //}, 2000);
+    }
 });

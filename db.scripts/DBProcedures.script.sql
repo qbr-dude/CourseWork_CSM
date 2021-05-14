@@ -64,7 +64,7 @@ GO
         PRINT 'The employee already exists in the database!';
         RETURN -1;
     END
-    INSERT INTO Employees (Position, EmployeeName, Passport, Expirience)
+    INSERT INTO Employees (Position, EmployeeName, Passport, Experience)
         VALUES(@Position, @EmployeeName, @Passport, @Expirience);
     RETURN 0
  END

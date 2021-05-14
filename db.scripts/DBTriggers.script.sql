@@ -1,17 +1,17 @@
 USE CinemaDB
 GO
 
--- when delete seance, remove all fit tickets
-CREATE TRIGGER dbo.RemoveTickets ON Seances
-    AFTER delete
-    AS
-BEGIN
-    SET NOCOUNT NO;
-    DECLARE @deletingSeance tinyint;
-    SET @deletingSeance = (SELECT SeanceId FROM deleted)
-    DELETE FROM Tickets WHERE SeanceId = @deletingSeance;
-END
-GO
+-- when delete seance, remove all fit tickets ADD CURSOR
+--CREATE TRIGGER dbo.RemoveTickets ON Seances
+--    AFTER delete
+--    AS
+--BEGIN
+--    DECLARE @deletingSeance tinyint;
+--    SET @deletingSeance = (SELECT SeanceId FROM deleted)
+--    DELETE FROM Tickets WHERE SeanceId = @deletingSeance;
+--END
+--GO
+DROP TRIGGER dbo.RemoveTickets
 
 -- checking the seating in the hall
 -- how it works: reading all holls (getting id, rows and seat). then read all tickets for this holl and read the same. check values.
@@ -51,30 +51,31 @@ AS
 GO
 -- advesting check
 --how it works: if general count of inserting and existing ad for seance more 20, it is skipping
-CREATE TRIGGER dbo.ChecingDurationForSession ON Advertising
-	INSTEAD OF insert
-AS
-	DECLARE @id tinyint, @SeanceId tinyint, @Duration tinyint;
-	DECLARE advertising_cursor CURSOR SCROLL
-		FOR SELECT AdID, SeanceId, AdvertisingDuration FROM inserted;
-	OPEN advertising_cursor;
-	FETCH FIRST FROM advertising_cursor
-		INTO @id, @SeanceId, @Duration;
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		IF @Duration + (SELECT SUM(AdvertisingDuration) FROM Advertising WHERE SeanceId = @SeanceId) < 20
-			INSERT INTO Advertising SELECT SeanceId, Employee, Advertiser, AdvertisingName, AdvertisingDuration, AdvertisingCost FROM inserted WHERE AdID = @id;
-		ELSE
-			PRINT 'ERROR!!';
-		FETCH NEXT FROM advertising_cursor
-			INTO @id, @SeanceId, @Duration;
-	END
-	CLOSE advertising_cursor;
-	DEALLOCATE advertising_cursor;
-GO
+--CREATE TRIGGER dbo.ChecingDurationForSession ON Advertising
+--	INSTEAD OF insert
+--AS
+--	DECLARE @id tinyint, @SeanceId tinyint, @Duration tinyint;
+--	DECLARE advertising_cursor CURSOR SCROLL
+--		FOR SELECT AdID, SeanceId, AdvertisingDuration FROM inserted;
+--	OPEN advertising_cursor;
+--	FETCH FIRST FROM advertising_cursor
+--		INTO @id, @SeanceId, @Duration;
+--	WHILE @@FETCH_STATUS = 0
+--	BEGIN
+--		IF @Duration + (SELECT SUM(AdvertisingDuration) FROM Advertising WHERE SeanceId = @SeanceId) < 20
+--			INSERT INTO Advertising SELECT SeanceId, Employee, Advertiser, AdvertisingName, AdvertisingDuration, AdvertisingCost FROM inserted WHERE AdID = @id;
+--		ELSE
+--			PRINT 'ERROR!!';
+--		FETCH NEXT FROM advertising_cursor
+--			INTO @id, @SeanceId, @Duration;
+--	END
+--	CLOSE advertising_cursor;
+--	DEALLOCATE advertising_cursor;
+--GO
 
 --checking seance show time (comparing show time and film duration)
 --how is works: get last time in holl and check inserting and its time
+drop trigger dbo.CheckingSeanceShowTime
 CREATE TRIGGER dbo.CheckingSeanceShowTime ON Seances
 	AFTER insert
 AS
@@ -89,10 +90,11 @@ AS
 		DECLARE @film_duration smallint;
 		SET @closest_time = (SELECT TOP(1) ShowTime FROM Seances WHERE HollID = @HollID ORDER BY ShowTime DESC);
 		SELECT @film_duration = Duration FROM Films WHERE FilmID = @FilmID;
-		IF CONVERT(date, @closest_time) > CONVERT(date, @insert_time) OR (CONVERT(date, @closest_time) = CONVERT(date, @insert_time) AND DATEDIFF(MINUTE, DATEADD(DAY, DATEDIFF(DAY, 0, @closest_time), 0), @closest_time) > DATEDIFF(MINUTE, DATEADD(DAY, DATEDIFF(DAY, 0, @insert_time), 0), @insert_time)) 
-			INSERT INTO Seances SELECT FilmID, HollID, ShowTime, AgeRating, SeanceType, TicketCost FROM inserted WHERE SeanceId = @seanceID;
-		ELSE
-			PRINT 'error!!!!';
+		IF CONVERT(date, @closest_time) < CONVERT(date, @insert_time) OR (CONVERT(date, @closest_time) = CONVERT(date, @insert_time) AND DATEDIFF(MINUTE, DATEADD(DAY, DATEDIFF(DAY, 0, @closest_time), 0), @closest_time) < DATEDIFF(MINUTE, DATEADD(DAY, DATEDIFF(DAY, 0, @insert_time), 0), @insert_time)) 
+		BEGIN
+			delete from Seances WHERE SeanceId = @seanceID;
+			PRINT 'ERROR';
+		END
 		FETCH NEXT FROM showtime_cursor
 			INTO @seanceID, @HollID, @FilmID, @insert_time;
 	END

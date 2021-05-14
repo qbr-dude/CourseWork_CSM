@@ -173,7 +173,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\SeanceHollModel\" />
     <Folder Include="Views\Ticket\" />
   </ItemGroup>
   <ItemGroup>

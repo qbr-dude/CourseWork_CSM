@@ -40,7 +40,13 @@
             </div>
         </footer>
     </div>
-@Scripts.Render("~/bundles/script")
-@RenderSection("scripts", required: false)
+    <div class="ordered-active">
+        <div class="tickets-ordered">
+            <span>Ваши билеты были зарезервированы</span>
+            @Html.ActionLink("Перейти на главную страницу", "Index", "Home", new { }, new { @class = "button" })
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/script")
+    @RenderSection("scripts", required: false)
 </body>
 </html>
