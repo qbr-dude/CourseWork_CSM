@@ -13,14 +13,16 @@ namespace Entities
         public string EmployeeName { private set; get; }
         public PassportType Passport { private set; get; }
         public int Expirience { private set; get; }
+        public string Phone { private set; get; }
 
-        public Employee(int id, string pos, string name, PassportType pass, int exp)
+        public Employee(int id, string pos, string name, PassportType pass, int exp, string phone)
         {
             EmployeeID = id;
             Position = pos;
             EmployeeName = name;
             Passport = pass;
             Expirience = exp;
+            Phone = phone;
         }
     }
 

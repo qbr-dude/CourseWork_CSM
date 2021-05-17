@@ -14,7 +14,7 @@ namespace Entities
         public DateTime ShowTime { private set; get; }
         public int AgeRating { private set; get; }
         public string SeanceType { private set; get; }
-        public int TicketCost { private set; get; }
+        public decimal TicketCost { private set; get; }
 
         public Seance(int id, int filmID, int hollID, DateTime time, int rating, string type, int cost)
         {

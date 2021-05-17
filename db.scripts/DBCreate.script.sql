@@ -3,13 +3,13 @@ USE master
 CREATE DATABASE CinemaDB
     ON  PRIMARY ( 
         NAME = N'Cinema', 
-        FILENAME = N'E:\CinemaDB\Cinema.mdf' , 
+        FILENAME = N'D:\CinemaDB\Cinema.mdf' , 
         SIZE = 8192KB , 
         FILEGROWTH = 65536KB 
     )
     LOG ON ( 
         NAME = N'Cinema_log', 
-        FILENAME = N'E:\CinemaDB\Cinema_log.ldf' ,
+        FILENAME = N'D:\CinemaDB\Cinema_log.ldf' ,
         SIZE = 8192KB ,  
         FILEGROWTH = 65536KB 
     )
@@ -27,6 +27,13 @@ CREATE RULE passport_rule AS (len(@passport) = 10);
 GO
 EXEC sp_bindrule 'passport_rule', 'passportType';
 GO
+
+CREATE TYPE phoneType
+    FROM nvarchar(10) NOT NULL
+GO
+CREATE TYPE imagePath
+    FROM nvarchar(255) NOT NULL
+GO
 --starting creating tables
 
 ----general table count - 12
@@ -43,7 +50,7 @@ CREATE TABLE dbo.Films (
     Duration smallint,
     Genre nvarchar(20),
     Rating float,
-    FilmImage nvarchar(255)
+    FilmImage imagePath
 )
 GO
 
@@ -52,7 +59,7 @@ CREATE TABLE dbo.EmployeePosition (
     PositionName nvarchar(30) PRIMARY KEY,
     Responsibilities nvarchar(255) NOT NULL,
     EmployeeRank tinyint NOT NULL, -- 1 - service staff ,2 - common employee, 3 - managment
-    Salary int NOT NULL
+    Salary money NOT NULL
 )
 GO
 
@@ -62,7 +69,8 @@ CREATE TABLE dbo.Employees (
     Position nvarchar(30) FOREIGN KEY REFERENCES EmployeePosition(PositionName),
     EmployeeName nvarchar(50) NOT NULL,
     Passport passportType UNIQUE NOT NULL, -- create user type
-    Experience tinyint
+    Experience tinyint,
+    Phone phoneType
 )
 GO
 
@@ -70,7 +78,8 @@ GO
 CREATE TABLE dbo.Advertisers (
     AdvertiserID tinyint PRIMARY KEY IDENTITY(1, 1),
     AdvertiserName nvarchar(50) NOT NULL,
-    CompanyName nvarchar(50) NOT NULL
+    CompanyName nvarchar(50) NOT NULL,
+    AdvertiserPhone phoneType
 )
 GO
 
@@ -98,7 +107,7 @@ CREATE TABLE dbo.Seances (
     ShowTime datetime NOT NULL, -- starting
     AgeRating tinyint,
     SeanceType nvarchar(20) FOREIGN KEY REFERENCES SeanceTypes(TypeName), 
-    TicketCost tinyint NOT NULL
+    TicketCost money NOT NULL
 )
 GO
 
@@ -109,7 +118,7 @@ CREATE TABLE dbo.Advertising (
     Advertiser tinyint FOREIGN KEY REFERENCES Advertisers(AdvertiserID),
     AdvertisingName nvarchar(20) NOT NULL,
     AdvertisingDuration tinyint CHECK (AdvertisingDuration <= 180) NOT NULL,
-    AdvertisingCost smallint NOT NULL
+    AdvertisingCost money NOT NULL
 )
 GO
 
@@ -136,11 +145,15 @@ GO
 --cashbox
 CREATE TABLE dbo.Cashboxes (
     CashboxID tinyint PRIMARY KEY IDENTITY(0, 1),
-    EmployeeID tinyint FOREIGN KEY REFERENCES Employees(EmployeeID), 
     StaffChangeTime tinyint,
     WorkTime tinyint DEFAULT 12
 )
 GO
+
+CREATE TABLE dbo.EmployeeCashbox (
+    EmployeeID tinyint FOREIGN KEY REFERENCES Employees(EmployeeID), 
+    CashboxID tinyint FOREIGN KEY REFERENCES Cashboxes(CashboxID),
+)
 
 --ticket
 CREATE TABLE dbo.Tickets (
@@ -150,7 +163,7 @@ CREATE TABLE dbo.Tickets (
     SeanceId tinyint FOREIGN KEY REFERENCES Seances(SeanceId),
     RowNumber tinyint NOT NULL, --constraints!
     SeatNumber tinyint CHECK(SeatNumber BETWEEN 0 AND 20) NOT NULL,
-    Cost smallint NOT NULL
+    Cost money NOT NULL
 )
 GO
 

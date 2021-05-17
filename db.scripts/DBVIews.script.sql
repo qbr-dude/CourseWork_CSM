@@ -15,17 +15,15 @@ CREATE VIEW AdvertisingView
     AS
 SELECT Advertising.AdvertisingName as 'Название рекламы', Films.FilmName as 'Название фильма', Advertisers.AdvertiserName as 'Рекламодатель', Advertisers.CompanyName as 'Компания рекламодателя', Employees.EmployeeName as 'Имя ответственного сотрудника', AdvertisingDuration as 'Длительность (сек)', AdvertisingCost as 'Стоимость'
     FROM Advertising
-        INNER JOIN Seances ON Advertising.SeanceId = Seances.SeanceId
+		INNER JOIN AdvertisingSeance ON Advertising.AdID = AdvertisingSeance.AdID
+        INNER JOIN Seances ON AdvertisingSeance.SeanceId = Seances.SeanceId
         INNER JOIN Films ON Seances.FilmID = Films.FilmID
         INNER JOIN Advertisers ON Advertising.Advertiser = AdvertiserID
         INNER JOIN Employees on Advertising.Employee = Employees.EmployeeID
 GO
-
 --view about employees
 CREATE VIEW EmployeeView
 	AS
 SELECT EmployeeName as 'ФИО', Position as 'Должность', Responsibilities as 'Обязанности', EmployeeRank as 'Ранг', Salary + (Experience * 1000) as 'Зарплата', Passport as 'Паспорт', Experience as 'Стаж'
 	FROM Employees INNER JOIN EmployeePosition ON Employees.Position = EmployeePosition.PositionName
 GO
-
-SELECT* FROM EmployeeView

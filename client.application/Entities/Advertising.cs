@@ -13,7 +13,7 @@ namespace Entities
         public int Advertiser { private set; get; }
         public string AdvertisingName { private set; get; }
         public int AdvertisingDuration { private set; get; }
-        public int AdvertisingCost { private set; get; }
+        public decimal AdvertisingCost { private set; get; }
 
         public Advertising(int id, int emplId, int advId, string name, int duration, int cost)
         {

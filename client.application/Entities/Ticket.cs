@@ -15,7 +15,7 @@ namespace Entities
         public int SeanceId { private set; get; }
         public int RowNumber { private set; get; }
         public int SeatNumber { private set; get; }
-        public int Cost { private set; get; }
+        public decimal Cost { private set; get; }
         public Ticket(int id, string type, int cashId, int seanceId, int row, int seat, int cost)
         {
             TicketID = LastId = id;

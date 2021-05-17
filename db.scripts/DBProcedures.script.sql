@@ -49,7 +49,7 @@ END
 GO
 
 --  employees
- CREATE PROCEDURE InsertEmployee (@Position nvarchar(20), @EmployeeName nvarchar(50), @Passport passportType, @Expirience tinyint)
+ CREATE PROCEDURE InsertEmployee (@Position nvarchar(20), @EmployeeName nvarchar(50), @Passport passportType, @Expirience tinyint, @Phone phoneType)
     AS
  BEGIN
     IF NOT EXISTS(SELECT PositionName FROM EmployeePosition WHERE PositionName = @Position)
@@ -64,27 +64,27 @@ GO
         PRINT 'The employee already exists in the database!';
         RETURN -1;
     END
-    INSERT INTO Employees (Position, EmployeeName, Passport, Experience)
-        VALUES(@Position, @EmployeeName, @Passport, @Expirience);
+    INSERT INTO Employees (Position, EmployeeName, Passport, Experience, Phone)
+        VALUES(@Position, @EmployeeName, @Passport, @Expirience, @Phone);
     RETURN 0
  END
  GO
 --  exec InsertEmployee 'Кассир', 'Martin', '1234567890', 0
 
 --  advertisers
- CREATE PROCEDURE InsertAdvertiser (@AdvertiserName nvarchar(50), @CompanyName nvarchar(50))
+ CREATE PROCEDURE InsertAdvertiser (@AdvertiserName nvarchar(50), @CompanyName nvarchar(50), @Phone phoneType)
     AS
  BEGIN
-    IF EXISTS(SELECT AdvertiserName, CompanyName
+    IF EXISTS(SELECT AdvertiserName, CompanyName, AdvertiserPhone
                 FROM Advertisers
-                    WHERE AdvertiserName = @AdvertiserName and CompanyName = @CompanyName)
+                    WHERE AdvertiserName = @AdvertiserName and CompanyName = @CompanyName and AdvertiserPhone = @Phone)
     BEGIN
         PRINT 'This advertiser is already buying services from us!';
         RETURN -1;
     END
 
     INSERT INTO Advertisers
-        VALUES(@AdvertiserName, @CompanyName);
+        VALUES(@AdvertiserName, @CompanyName, @Phone);
     RETURN 0
  END
  GO

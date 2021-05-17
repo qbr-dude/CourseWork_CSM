@@ -12,10 +12,10 @@ namespace CinemaClientApplication.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly SQLRequestesDAO requestDAO;
+        private readonly SQLManagerDAO requestDAO;
         public HomeController()
         {
-            requestDAO = new SQLRequestesDAO();
+            requestDAO = new SQLManagerDAO();
         }
         public ActionResult Index()
         {

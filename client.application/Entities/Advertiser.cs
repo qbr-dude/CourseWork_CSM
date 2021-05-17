@@ -11,11 +11,13 @@ namespace Entities
         public int AdvertiserID { private set; get; }
         public string AdvertiserName { private set; get; }
         public string CompanyName { private set; get; }
-        public Advertiser(int id, string name, string companyName)
+        public string AdvertiserPhone { private set; get; }
+        public Advertiser(int id, string name, string companyName, string phone)
         {
             AdvertiserID = id;
             AdvertiserName = name;
             CompanyName = companyName;
+            AdvertiserPhone = phone;
         }
     }
 }

@@ -1,17 +1,25 @@
 USE CinemaDB
 GO
 
--- when delete seance, remove all fit tickets ADD CURSOR
---CREATE TRIGGER dbo.RemoveTickets ON Seances
---    AFTER delete
---    AS
---BEGIN
---    DECLARE @deletingSeance tinyint;
---    SET @deletingSeance = (SELECT SeanceId FROM deleted)
---    DELETE FROM Tickets WHERE SeanceId = @deletingSeance;
---END
---GO
-DROP TRIGGER dbo.RemoveTickets
+-- when delete seance, remove all fit tickets ADD CURSOR (cancellation of the session)
+CREATE TRIGGER dbo.RemoveTickets ON Seances
+   AFTER delete
+AS
+	DECLARE @deletingSeance tinyint;
+	DECLARE seances_cursor CURSOR SCROLL
+		FOR SELECT SeanceId FROM deleted;
+	OPEN seances_cursor;
+	FETCH FIRST FROM seances_cursor
+		INTO @deletingSeance;
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		DELETE FROM Tickets WHERE SeanceId = @deletingSeance;
+		FETCH NEXT FROM seances_cursor
+			INTO @deletingSeance;
+	END
+	CLOSE seances_cursor;
+	DEALLOCATE seances_cursor;
+GO
 
 -- checking the seating in the hall
 -- how it works: reading all holls (getting id, rows and seat). then read all tickets for this holl and read the same. check values.
@@ -51,31 +59,44 @@ AS
 GO
 -- advesting check
 --how it works: if general count of inserting and existing ad for seance more 20, it is skipping
---CREATE TRIGGER dbo.ChecingDurationForSession ON Advertising
---	INSTEAD OF insert
---AS
---	DECLARE @id tinyint, @SeanceId tinyint, @Duration tinyint;
---	DECLARE advertising_cursor CURSOR SCROLL
---		FOR SELECT AdID, SeanceId, AdvertisingDuration FROM inserted;
---	OPEN advertising_cursor;
---	FETCH FIRST FROM advertising_cursor
---		INTO @id, @SeanceId, @Duration;
---	WHILE @@FETCH_STATUS = 0
---	BEGIN
---		IF @Duration + (SELECT SUM(AdvertisingDuration) FROM Advertising WHERE SeanceId = @SeanceId) < 20
---			INSERT INTO Advertising SELECT SeanceId, Employee, Advertiser, AdvertisingName, AdvertisingDuration, AdvertisingCost FROM inserted WHERE AdID = @id;
---		ELSE
---			PRINT 'ERROR!!';
---		FETCH NEXT FROM advertising_cursor
---			INTO @id, @SeanceId, @Duration;
---	END
---	CLOSE advertising_cursor;
---	DEALLOCATE advertising_cursor;
---GO
+-- CREATE TRIGGER dbo.ChecingDurationForSeance ON AdvertisingSeance
+-- 	INSTEAD OF insert
+-- AS
+-- 	DECLARE @id tinyint, @SeanceId tinyint, @Duration tinyint;
+-- 	DECLARE advertising_cursor CURSOR SCROLL
+-- 		FOR SELECT AdID, SeanceId FROM inserted;
+-- 	OPEN advertising_cursor;
+-- 	FETCH FIRST FROM advertising_cursor
+-- 		INTO @id, @SeanceId;
+-- 	WHILE @@FETCH_STATUS = 0
+-- 	BEGIN
+-- 		SELECT @Duration = Duration FROM Advertising WHERE AdID = @id;
+-- 		DECLARE @checkingDuration tinyint;
+-- 		DECLARE durations_cursor CURSOR SCROLL
+-- 			FOR SELECT Duration FROM Advertising;
+-- 		OPEN durations_cursor;
+-- 		DEALLOCATE durations_cursor;
+-- 		FETCH FIRST FROM advertising_cursor
+-- 			INTO @checkingDuration;
+-- 		WHILE @@FETCH_STATUS = 0
+-- 		BEGIN
+-- 			IF @id in (SELECT FROM AdvertisingSeance Grou)
+-- 			IF @Duration + (SELECT SUM(AdvertisingDuration) 
+-- 								FROM AdvertisingSeance INNER JOIN Advertising ON AdvertisingSeance.AdID = Advertising.AdID 
+-- 									WHERE SeanceId = @SeanceId) < 20
+-- 				INSERT INTO Advertising SELECT SeanceId, Employee, Advertiser, AdvertisingName, AdvertisingDuration, AdvertisingCost FROM inserted WHERE AdID = @id;
+-- 			ELSE
+-- 				PRINT 'ERROR!!';
+-- 		END
+-- 		FETCH NEXT FROM advertising_cursor
+-- 			INTO @id, @SeanceId, @Duration;
+-- 	END
+-- 	CLOSE advertising_cursor;
+-- 	DEALLOCATE advertising_cursor;
+-- GO
 
 --checking seance show time (comparing show time and film duration)
 --how is works: get last time in holl and check inserting and its time
-drop trigger dbo.CheckingSeanceShowTime
 CREATE TRIGGER dbo.CheckingSeanceShowTime ON Seances
 	AFTER insert
 AS
@@ -102,6 +123,6 @@ AS
 	DEALLOCATE showtime_cursor;
 GO
 
-DECLARE @dt datetime 
-SET @dt = '01-01-2001 07:10:20'
-SELECT DATEDIFF(MINUTE, DATEADD(DAY, DATEDIFF(DAY, 0, @dt), 0), @dt)
+-- DECLARE @dt datetime 
+-- SET @dt = '01-01-2001 07:10:20'
+-- SELECT DATEDIFF(MINUTE, DATEADD(DAY, DATEDIFF(DAY, 0, @dt), 0), @dt)
