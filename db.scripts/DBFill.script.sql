@@ -78,7 +78,11 @@ INSERT INTO EmployeeHoll VALUES
     (1, 7, 5),
     (2, 7, 5),
     (3, 7, 5),
-    (4, 7, 5)
+    (4, 7, 5),
+	(1, 4, 12),
+	(2, 4, 12),
+	(3, 4, 12),
+	(4, 4, 12)
 GO
 --seances
 INSERT INTO Seances VALUES
@@ -114,10 +118,17 @@ GO
 
 --advertisings
 INSERT INTO Advertising VALUES
-    (3, 2, 'radio', 100, 10000),
-    (3, 2, 'radio', 100, 10000),
-    (3, 1, 'tourism', 120, 15000),
-    (3, 1, 'tourism', 120, 15000)
+    (2, 'radio', 100, 10000),
+    (2, 'radio', 100, 10000),
+    (1, 'tourism', 120, 15000),
+    (1, 'tourism', 120, 15000)
+GO
+
+INSERT INTO AdvertisingEmployee VALUES
+    (3, 1),
+    (3, 2),
+    (3, 3),
+    (3, 4)
 GO
 
 INSERT INTO AdvertisingSeance VALUES
@@ -127,4 +138,3 @@ INSERT INTO AdvertisingSeance VALUES
     (2, 1),
     (2, 3)
 GO
-select* v

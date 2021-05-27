@@ -114,13 +114,17 @@ GO
 --advertising
 CREATE TABLE dbo.Advertising (
     AdID tinyint PRIMARY KEY IDENTITY(1, 1),
-    Employee tinyint FOREIGN KEY REFERENCES Employees(EmployeeID),
     Advertiser tinyint FOREIGN KEY REFERENCES Advertisers(AdvertiserID),
     AdvertisingName nvarchar(20) NOT NULL,
     AdvertisingDuration tinyint CHECK (AdvertisingDuration <= 180) NOT NULL,
     AdvertisingCost money NOT NULL
 )
 GO
+
+CREATE TABLE dbo.AdvertisingEmployee (
+    EmployeeID tinyint FOREIGN KEY REFERENCES Employees(EmployeeID),
+    AdID tinyint FOREIGN KEY REFERENCES Advertising(AdID)
+)
 
 CREATE TABLE dbo.AdvertisingSeance (
     SeanceId tinyint FOREIGN KEY REFERENCES Seances(SeanceId),

@@ -17,9 +17,10 @@ SELECT Advertising.AdvertisingName as 'Название рекламы', Films.F
     FROM Advertising
 		INNER JOIN AdvertisingSeance ON Advertising.AdID = AdvertisingSeance.AdID
         INNER JOIN Seances ON AdvertisingSeance.SeanceId = Seances.SeanceId
+        INNER JOIN AdvertisingEmployee ON Advertising.AdID = AdvertisingEmployee.AdID
         INNER JOIN Films ON Seances.FilmID = Films.FilmID
         INNER JOIN Advertisers ON Advertising.Advertiser = AdvertiserID
-        INNER JOIN Employees on Advertising.Employee = Employees.EmployeeID
+        INNER JOIN Employees on AdvertisingEmployee.EmployeeID = Employees.EmployeeID
 GO
 --view about employees
 CREATE VIEW EmployeeView

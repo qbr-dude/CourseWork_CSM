@@ -89,7 +89,7 @@ GO
  END
  GO
 --  exec InsertAdvertiser 'Р. Кирилин', 'ПоЛИтех'
---  advertising
+--  advertising || just adding advertising, setting on seance in another procedure
  CREATE PROCEDURE InsertAdvertising (@Employee tinyint, @Advertiser tinyint, @AdvertisingName nvarchar(20), @AdvertisingDuration tinyint, @AdvertisingCost smallint)
     AS
  BEGIN
@@ -112,11 +112,13 @@ GO
     END
 
     INSERT INTO Advertising
-        VALUES(@Employee, @Advertiser, @AdvertisingName, @AdvertisingDuration, @AdvertisingCost);
+        VALUES(@Advertiser, @AdvertisingName, @AdvertisingDuration, @AdvertisingCost);
+    INSERT INTO AdvertisingEmployee
+        VALUES(@Employee, (SELECT AdID FROM Advertising WHERE Advertiser = @Advertiser and AdvertisingName = @AdvertisingName))
     RETURN 0
  END
  GO
---  exec InsertAdvertising 6, 3, 3, 'some', 200, 4000
+--exec InsertAdvertising 3, 1, 'some', 180, 5000
 --  ticket
 CREATE PROCEDURE CreateTicket (@SeanceId tinyint, @TypeName nvarchar(20), @CashboxID tinyint, @RowNumber tinyint, @SeatNumber tinyint, @Cost smallint)
    AS

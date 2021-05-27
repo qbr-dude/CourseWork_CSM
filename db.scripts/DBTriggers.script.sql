@@ -59,41 +59,30 @@ AS
 GO
 -- advesting check
 --how it works: if general count of inserting and existing ad for seance more 20, it is skipping
--- CREATE TRIGGER dbo.ChecingDurationForSeance ON AdvertisingSeance
--- 	INSTEAD OF insert
--- AS
--- 	DECLARE @id tinyint, @SeanceId tinyint, @Duration tinyint;
--- 	DECLARE advertising_cursor CURSOR SCROLL
--- 		FOR SELECT AdID, SeanceId FROM inserted;
--- 	OPEN advertising_cursor;
--- 	FETCH FIRST FROM advertising_cursor
--- 		INTO @id, @SeanceId;
--- 	WHILE @@FETCH_STATUS = 0
--- 	BEGIN
--- 		SELECT @Duration = Duration FROM Advertising WHERE AdID = @id;
--- 		DECLARE @checkingDuration tinyint;
--- 		DECLARE durations_cursor CURSOR SCROLL
--- 			FOR SELECT Duration FROM Advertising;
--- 		OPEN durations_cursor;
--- 		DEALLOCATE durations_cursor;
--- 		FETCH FIRST FROM advertising_cursor
--- 			INTO @checkingDuration;
--- 		WHILE @@FETCH_STATUS = 0
--- 		BEGIN
--- 			IF @id in (SELECT FROM AdvertisingSeance Grou)
--- 			IF @Duration + (SELECT SUM(AdvertisingDuration) 
--- 								FROM AdvertisingSeance INNER JOIN Advertising ON AdvertisingSeance.AdID = Advertising.AdID 
--- 									WHERE SeanceId = @SeanceId) < 20
--- 				INSERT INTO Advertising SELECT SeanceId, Employee, Advertiser, AdvertisingName, AdvertisingDuration, AdvertisingCost FROM inserted WHERE AdID = @id;
--- 			ELSE
--- 				PRINT 'ERROR!!';
--- 		END
--- 		FETCH NEXT FROM advertising_cursor
--- 			INTO @id, @SeanceId, @Duration;
--- 	END
--- 	CLOSE advertising_cursor;
--- 	DEALLOCATE advertising_cursor;
--- GO
+ CREATE TRIGGER dbo.ChecingDurationForSeance ON AdvertisingSeance
+ 	INSTEAD OF insert
+ AS
+ 	DECLARE @id tinyint, @SeanceId tinyint, @Duration tinyint;
+ 	DECLARE advertising_cursor CURSOR SCROLL
+ 		FOR SELECT AdID, SeanceId FROM inserted;
+ 	OPEN advertising_cursor;
+ 	FETCH FIRST FROM advertising_cursor
+ 		INTO @id, @SeanceId;
+ 	WHILE @@FETCH_STATUS = 0
+ 	BEGIN
+ 		SELECT @Duration = AdvertisingDuration FROM Advertising WHERE AdID = @id;
+ 		DECLARE @checkingDuration smallint;
+ 		SELECT @checkingDuration = SUM(AdvertisingDuration) FROM Advertising INNER JOIN AdvertisingSeance on Advertising.AdID = AdvertisingSeance.AdID GROUP BY SeanceId HAVING SeanceId = @SeanceId;
+		IF @Duration + @checkingDuration < 600
+			INSERT INTO AdvertisingSeance VALUES (@id, @SeanceId);
+		ELSE
+			PRINT 'error with duration. too long!';
+ 		FETCH NEXT FROM advertising_cursor
+ 			INTO @id, @SeanceId, @Duration;
+ 	END
+ 	CLOSE advertising_cursor;
+ 	DEALLOCATE advertising_cursor;
+ GO
 
 --checking seance show time (comparing show time and film duration)
 --how is works: get last time in holl and check inserting and its time
