@@ -22,7 +22,7 @@
 
             $(this).children('img').css({ 'outline': 'none', 'opacity': .4 });
         } else {
-            $(this).children('img').css({ 'outline': '3px solid #f6974c', 'opacity': 1 });
+            $(this).children('img').css({ 'outline': '3px solid #5c6b7f', 'opacity': 1 });
             selectedTickets.push(row + '-' + seat);
         }
         drawTicketInfo();

@@ -7,12 +7,12 @@ body {
 }
 
 .wrapper {
-    background-color: #1e4860e3;
+    background-color: #4292bfe3;
 }
 
 .header {
     padding: 25px 12%;
-    background-color: #cd322d;
+    background-color: #5c6b7f;
 }
 
 .header-content {
@@ -68,7 +68,7 @@ body {
 }
 
 .footer {
-    background-color: #cd322d;
+    background-color: #5c6b7f;
     padding: 25px 10%;
     display: flex;
     justify-content: space-between;
@@ -91,6 +91,11 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 2px solid #5c6b7f;
+}
+.film-item:last-child {
+    border-bottom: none;
 }
 .film-logo {
     width: 200px;
@@ -104,7 +109,7 @@ body {
 
 .film-label {
     width: 50%;
-    color: white;
+    color: #000;
     height: 120px;
     display: flex;
     flex-direction: column;
@@ -112,7 +117,7 @@ body {
 }
 .film-label > span {
     font-size: 40px;
-    color: #f6974c;
+    color: #000;
 }
 .film-short-info {
     display: flex;
@@ -136,7 +141,7 @@ body {
     border: none;
 }
 .film-button .button:hover {
-    background-color: #f6974e;
+    background-color: #5c6b7f;
 }
 
 /*another page*/
@@ -160,7 +165,7 @@ body {
 }
 .film-area .info .label {
     font-size: 50px;
-    color: #f6974c;
+    color: #000;
 }
 .film-area .info-table {
     margin-top: 50px;
@@ -174,7 +179,7 @@ body {
     font-size: 20px;
 }
 .film-area .info-table div span:last-child {
-    color: #f6974c;
+    text-decoration:underline;
 }
 .no-seances {
     font-size: 30px;
@@ -182,8 +187,7 @@ body {
     color: #f6974c;
 }
 .seances-area {
-    margin-top: 50px;
-    margin-bottom: 25px;
+    margin: 50px 0 50px;
 }
 .seance-item {
     display: flex;
@@ -192,7 +196,7 @@ body {
 }
 .seance-time {
     font-size: 30px;
-    color: #f6974e;
+    color: #000;
 }
 .seance-button {
     display: flex;
@@ -207,7 +211,13 @@ body {
     border: none;
 }
 .seance-button .button:hover {
-    background-color: #f6974e;
+    background-color: #5c6b7f;
+}
+.seance-general-label {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    font-size: 35px;
 }
 
 /*seats*/
@@ -228,7 +238,7 @@ body {
     margin: 3px 5px;
 }
 .seat:hover {
-    outline: 2px solid #f6974c;
+    outline: 2px solid #5c6b7f;
 }
 .seat img {
     opacity: .4;
@@ -248,7 +258,7 @@ body {
     width: 35%;
 }
 .seance-info div span:last-child, .seats-handler div span:last-child {
-    color: #f6974e;
+    color: #000;
 }
 .seats-handler {
     display: flex;
