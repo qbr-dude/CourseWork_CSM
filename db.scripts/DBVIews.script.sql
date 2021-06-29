@@ -2,12 +2,13 @@ USE CinemaDB
 GO
 
 --view with seance info
-CREATE VIEW SeanceView 
+CREATE VIEW SeanceViewForJunior 
     AS
 SELECT Films.FilmName as 'Название фильма', HollID as 'Номер зала', ShowTime as 'Время показа', AgeRating as 'Возрастной рейтинг', SeanceType as 'Тип сеанса', SeanceTypes.TypeDescription as 'Описание сеанса'
     FROM Seances 
         INNER JOIN Films ON Seances.FilmID = Films.FilmID
         INNER JOIN SeanceTypes ON Seances.SeanceType = SeanceTypes.TypeName
+			WHERE AgeRating BETWEEN 6 AND 13
 GO
 
 --view about advertising

@@ -26,6 +26,5 @@ namespace Entities
             SeatNumber = seat;
             Cost = cost;
         }
-
     }
 }

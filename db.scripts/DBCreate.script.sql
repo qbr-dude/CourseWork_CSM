@@ -125,11 +125,13 @@ CREATE TABLE dbo.AdvertisingEmployee (
     EmployeeID tinyint FOREIGN KEY REFERENCES Employees(EmployeeID),
     AdID tinyint FOREIGN KEY REFERENCES Advertising(AdID)
 )
+GO
 
 CREATE TABLE dbo.AdvertisingSeance (
     SeanceId tinyint FOREIGN KEY REFERENCES Seances(SeanceId),
     AdID tinyint FOREIGN KEY REFERENCES Advertising(AdID)
 )
+GO
 --EmployeeHoll
 CREATE TABLE dbo.EmployeeHoll (
     HollID tinyint FOREIGN KEY REFERENCES CinemaHolls(HollID),

@@ -138,3 +138,5 @@ INSERT INTO AdvertisingSeance VALUES
     (2, 1),
     (2, 3)
 GO
+
+select* from AdvertisingSeance

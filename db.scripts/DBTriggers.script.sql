@@ -72,13 +72,16 @@ GO
  	BEGIN
  		SELECT @Duration = AdvertisingDuration FROM Advertising WHERE AdID = @id;
  		DECLARE @checkingDuration smallint;
- 		SELECT @checkingDuration = SUM(AdvertisingDuration) FROM Advertising INNER JOIN AdvertisingSeance on Advertising.AdID = AdvertisingSeance.AdID GROUP BY SeanceId HAVING SeanceId = @SeanceId;
+		IF NOT EXISTS(SELECT* FROM AdvertisingSeance)
+			SET @checkingDuration = 0;
+		ELSE
+ 			SELECT @checkingDuration = SUM(AdvertisingDuration) FROM Advertising INNER JOIN AdvertisingSeance on Advertising.AdID = AdvertisingSeance.AdID GROUP BY SeanceId HAVING SeanceId = 1;
 		IF @Duration + @checkingDuration < 600
 			INSERT INTO AdvertisingSeance VALUES (@id, @SeanceId);
 		ELSE
 			PRINT 'error with duration. too long!';
  		FETCH NEXT FROM advertising_cursor
- 			INTO @id, @SeanceId, @Duration;
+ 			INTO @id, @SeanceId;
  	END
  	CLOSE advertising_cursor;
  	DEALLOCATE advertising_cursor;

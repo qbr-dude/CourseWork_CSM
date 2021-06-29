@@ -1,8 +1,4 @@
 ﻿$(document).ready(function () {
-    //$('.films-area').on("load", function () {
-    //    if (ticketsOrdered)
-    //        ShowOrdered();
-    //});
     $('.seance-button').hover(function () {
         $(this).siblings('.seance-time').css('text-decoration', 'underline');
     }, function () {
@@ -61,12 +57,7 @@
         });
     });
     function ShowOrdered() {
-        console.log("here");
         $('.wrapper').css('z-index', -1);
         $('.ordered-active').css('visibility', 'visible');
-        //$('.tickets-ordered').css('top', '100px');
-        //setTimeout(function () {
-        //    $('.tickets-ordered').css('top', '-100%');
-        //}, 2000);
     }
 });
