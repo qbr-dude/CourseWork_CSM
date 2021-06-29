@@ -24,10 +24,12 @@
     @if (Model.Seances.Count == 0)
     {
         <span class="no-seances">На данные фильм сеансов нет!</span>
+    } else
+    {
+        <div class="seance-general-label">
+            <span>Расписание сеансов</span>
+        </div>
     }
-    <div class="seance-general-label">
-        <span>Расписание сеансов</span>
-    </div>
     @foreach (var seance in Model.Seances)
     {
         <div class="seance-item">

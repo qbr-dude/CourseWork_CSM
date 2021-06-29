@@ -52,7 +52,7 @@ AS
 		CLOSE tickets_cursor;
 		DEALLOCATE tickets_cursor;	
 		FETCH NEXT FROM holls_cursor
-		INTO @HollID, @row, @seat; 
+			INTO @HollID, @row, @seat; 
 	END
 	CLOSE holls_cursor;
 	DEALLOCATE holls_cursor;
