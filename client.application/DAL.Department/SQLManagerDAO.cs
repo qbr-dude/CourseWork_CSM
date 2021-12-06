@@ -233,5 +233,48 @@ namespace DAL.Department
                 DBConnection.Close();
             }
         }
+
+        public int RemoveTickets(int seanceId, string seats)
+        {
+            List<int> rows = new List<int>(), cols = new List<int>();
+            SqlParameter retValue = new SqlParameter();
+            retValue.Direction = System.Data.ParameterDirection.ReturnValue;
+
+            foreach (var seat in seats.Split(';'))
+            {
+                if(seat != "")
+                {
+                    rows.Add(int.Parse(seat.Split(',')[0]));
+                    cols.Add(int.Parse(seat.Split(',')[1]));
+                }
+            }
+
+            if (DBConnection.State != System.Data.ConnectionState.Open)
+                DBConnection.Open();
+            try
+            {
+                for (int i = 0; i < rows.Count; i++)
+                {
+
+                    SqlCommand command = new SqlCommand(@"RemoveSeanceTickets", DBConnection)
+                    {
+                        CommandType = System.Data.CommandType.StoredProcedure
+                    };
+                    command.Parameters.AddWithValue("@SeanceID", seanceId);
+                    command.Parameters.AddWithValue("@Row", rows[i]);
+                    command.Parameters.AddWithValue("@Seat", cols[i]);
+                    command.Parameters.Add(retValue);
+
+
+                    command.ExecuteNonQuery();
+                    
+                }
+            }
+            finally
+            {
+                DBConnection.Close();
+            }
+            return (int)retValue.Value;
+        }
     }
 }

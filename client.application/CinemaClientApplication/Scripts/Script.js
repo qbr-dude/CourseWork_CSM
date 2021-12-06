@@ -50,7 +50,7 @@
             success: function () {
                 ShowOrdered();
                 //window.location = "../Index";
-            }, 
+            },
             error: function () {
                 console.log(data);
             }
@@ -60,4 +60,27 @@
         $('.wrapper').css('z-index', -1);
         $('.ordered-active').css('visibility', 'visible');
     }
+    let removeActive = false;
+    $('.remove-toggle').click(function (event) {
+        event.preventDefault();
+        $('.wrapper').toggle('remove-active');
+        $('.remove-ticket-form').toggle('remove-active');
+        removeActive = !removeActive;
+    });
+    $('#remove-film').on('change', function (e) {
+        e.preventDefault();
+        let film = $(this).val();
+        $.ajax({
+            url: 'Home/_SeancesSearch',
+            type: 'GET',
+            data: { film: film },
+            success: function (partialView) {
+                $('#remove-film-seances').html(partialView);
+                $('#remove-film-seances').show();
+            }
+        })
+    })
+    $('.remove-notice-close').click(function () {
+        $('.remove-notice').remove();
+    })
 });

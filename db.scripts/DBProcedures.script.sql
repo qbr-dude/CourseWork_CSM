@@ -197,3 +197,17 @@ BEGIN
 			WHERE Seances.SeanceId = @seance
 END
 GO
+
+CREATE PROCEDURE RemoveSeanceTickets (@SeanceID tinyint, @Row tinyint, @Seat tinyint)
+	AS
+BEGIN
+	IF EXISTS (SELECT * 
+				FROM Tickets 
+					WHERE SeanceId = @SeanceID AND RowNumber = @Row AND SeatNumber = @Seat)
+		DELETE FROM Tickets
+			WHERE SeanceId = @SeanceID AND RowNumber = @Row AND SeatNumber = @Seat
+	ELSE
+		RETURN -1;
+	RETURN 0;
+END
+GO

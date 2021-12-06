@@ -6,11 +6,15 @@
     @foreach (var item in Model)
     {
         <div class="film-item">
-            <div class="film-logo">
-                <img src="~/Content/img/films.img/@item.FilmImage" alt="Alternate Text" />
-            </div>
+            <a href="@Url.Action("FilmInfo", "Home", new { id = @item.FilmID })">
+                <div class="film-logo">
+                    <img src="~/Content/img/films.img/@item.FilmImage" alt="Alternate Text" />
+                </div>
+            </a>
             <div class="film-label">
-                <span>@item.FilmName</span>
+                <a href="@Url.Action("FilmInfo", "Home", new { id = @item.FilmID })">
+                    <span>@item.FilmName</span>
+                </a>
                 <div class="film-short-info">
                     <div class="film-director">
                         <span>Режиссер:</span> <span>@item.Director</span>

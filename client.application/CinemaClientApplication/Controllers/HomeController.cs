@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using DAL.Department;
 using Newtonsoft.Json;
@@ -13,9 +14,13 @@ namespace CinemaClientApplication.Controllers
         public HomeController()
         {
             requestDAO = new SQLManagerDAO();
+            SelectList films = new SelectList(requestDAO.GetAllFilms(), "FilmID", "FilmName");
+            ViewBag.Films = films;
+            ViewBag.Seances = films;
         }
-        public ActionResult Index()
+        public ActionResult Index(int? removeSuccess)
         {
+            if(removeSuccess != null)ViewBag.Remove = removeSuccess;
             return View(requestDAO.GetAllFilms().ToList());
         }
 
@@ -54,6 +59,28 @@ namespace CinemaClientApplication.Controllers
             requestDAO.CreateTickets(ticketsInfo);
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult RemoveTickets(FormCollection form)
+        {
+            int seance = int.Parse(form["Seances"]);
+            string tickets = form["Tickets"];
+            int? result = requestDAO.RemoveTickets(seance, tickets);
+            return RedirectToAction("Index", "Home", new { removeSuccess = result});
+        }
+        [HttpGet]
+        public PartialViewResult _SeancesSearch(int film)
+        {
+            List<Entities.Seance> seances = requestDAO.GetSeancesForFilms(film).ToList();
+            SelectList listItems = new SelectList(seances, "SeanceID", "ShowTime");
+            if (seances.Count == 0)
+            {
+
+                listItems = new SelectList(new List<SelectListItem> { new SelectListItem { Value = "-1", Text = "Не найдено сеансов" } }, "Value", "Text");
+            }
+            ViewBag.Seances = listItems;
+            return PartialView(listItems);
         }
     }
 }

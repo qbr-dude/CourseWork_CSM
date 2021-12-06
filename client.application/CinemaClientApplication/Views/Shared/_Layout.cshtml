@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web.UI.WebControls;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -21,7 +23,7 @@
                     <span class="header-label">Фильмы в прокате</span>
                 </div>
                 <div class="header-advertising">
-                    <button>Вы рекламодатель?</button>
+                    <a href="" class="remove-toggle">Сдать билеты обратно</a>
                     <!-- modal -->
                 </div>
             </div>
@@ -46,6 +48,40 @@
             @Html.ActionLink("Перейти на главную страницу", "Index", "Home", new { }, new { @class = "button" })
         </div>
     </div>
+    <div class="remove-ticket-form hidden">
+        @using (Html.BeginForm("RemoveTickets", "Home", FormMethod.Post))
+        {
+            @Html.ValidationSummary(true);
+            <span class="remove-form-label">Возврат билетов</span>
+            <div class="remove-form">
+                <div class="remove-form-item">
+                    <span>Выберите фильм:</span>
+                    @Html.DropDownList("FilmID", ViewBag.Films as SelectList, new { id = "remove-film", required = true})
+                </div>
+                <div class="remove-form-item">
+                    <span>Выберите фильм:</span>
+                    <div id="remove-film-seances">
+
+                    </div>
+                </div>
+                <div class="remove-form-item">
+                    <span>Введите номера мест по шаблону (x,y;):</span>
+                    @Html.TextBox("Tickets", "", new { placeholder = "Введите номера", required = true })
+                </div>
+                <div class="remove-form-buttons">
+                    <button class="remove-toggle">Отмена</button>
+                    <input type="submit" value="Вернуть билеты" />
+                </div>
+            </div>
+        }
+    </div>
+    @if (ViewBag.Remove != null && ViewBag.Remove == -1)
+    {
+        <div class="remove-notice">
+            <span>Таких билетов не существует</span>
+            <button class="remove-notice-close">Понятно</button>
+        </div>
+    }
     @Scripts.Render("~/bundles/script")
     @RenderSection("scripts", required: false)
 </body>

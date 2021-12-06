@@ -20,3 +20,14 @@ C:\Users\jst_d\OneDrive\Рабочий стол\CourseWork_CSM\client.applicatio
 C:\Users\jst_d\OneDrive\Рабочий стол\CourseWork_CSM\client.application\DAL.Department\obj\Debug\DAL.Department.csproj.CopyComplete
 C:\Users\jst_d\OneDrive\Рабочий стол\CourseWork_CSM\client.application\DAL.Department\obj\Debug\DAL.Department.dll
 C:\Users\jst_d\OneDrive\Рабочий стол\CourseWork_CSM\client.application\DAL.Department\obj\Debug\DAL.Department.pdb
+C:\Users\jst_d\OneDrive\Рабочий стол\Files\CourseWork_CSM\client.application\DAL.Department\bin\Debug\DAL.Department.dll.config
+C:\Users\jst_d\OneDrive\Рабочий стол\Files\CourseWork_CSM\client.application\DAL.Department\bin\Debug\DAL.Department.dll
+C:\Users\jst_d\OneDrive\Рабочий стол\Files\CourseWork_CSM\client.application\DAL.Department\bin\Debug\DAL.Department.pdb
+C:\Users\jst_d\OneDrive\Рабочий стол\Files\CourseWork_CSM\client.application\DAL.Department\bin\Debug\Entities.dll
+C:\Users\jst_d\OneDrive\Рабочий стол\Files\CourseWork_CSM\client.application\DAL.Department\bin\Debug\Entities.pdb
+C:\Users\jst_d\OneDrive\Рабочий стол\Files\CourseWork_CSM\client.application\DAL.Department\bin\Debug\Entities.dll.config
+C:\Users\jst_d\OneDrive\Рабочий стол\Files\CourseWork_CSM\client.application\DAL.Department\obj\Debug\DAL.Department.csproj.AssemblyReference.cache
+C:\Users\jst_d\OneDrive\Рабочий стол\Files\CourseWork_CSM\client.application\DAL.Department\obj\Debug\DAL.Department.csproj.CoreCompileInputs.cache
+C:\Users\jst_d\OneDrive\Рабочий стол\Files\CourseWork_CSM\client.application\DAL.Department\obj\Debug\DAL.Department.csproj.CopyComplete
+C:\Users\jst_d\OneDrive\Рабочий стол\Files\CourseWork_CSM\client.application\DAL.Department\obj\Debug\DAL.Department.dll
+C:\Users\jst_d\OneDrive\Рабочий стол\Files\CourseWork_CSM\client.application\DAL.Department\obj\Debug\DAL.Department.pdb
