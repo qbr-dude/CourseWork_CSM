@@ -56,7 +56,7 @@
             <div class="remove-form">
                 <div class="remove-form-item">
                     <span>Выберите фильм:</span>
-                    @Html.DropDownList("FilmID", ViewBag.Films as SelectList, new { id = "remove-film", required = true})
+                    @Html.DropDownList("FilmID", ViewBag.Films as SelectList, new { id = "remove-film", required = true })
                 </div>
                 <div class="remove-form-item">
                     <span>Выберите фильм:</span>
@@ -79,6 +79,13 @@
     {
         <div class="remove-notice">
             <span>Таких билетов не существует</span>
+            <button class="remove-notice-close">Понятно</button>
+        </div>
+    }
+    else if (ViewBag.Remove != null && ViewBag.Remove == 0)
+    {
+        <div class="remove-notice">
+            <span>Билеты были возвращены</span>
             <button class="remove-notice-close">Понятно</button>
         </div>
     }

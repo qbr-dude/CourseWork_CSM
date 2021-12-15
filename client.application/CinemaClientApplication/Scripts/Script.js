@@ -63,8 +63,8 @@
     let removeActive = false;
     $('.remove-toggle').click(function (event) {
         event.preventDefault();
-        $('.wrapper').toggle('remove-active');
-        $('.remove-ticket-form').toggle('remove-active');
+        $('.wrapper').toggleClass('remove-active');
+        $('.remove-ticket-form').toggleClass('remove-active');
         removeActive = !removeActive;
     });
     $('#remove-film').on('change', function (e) {

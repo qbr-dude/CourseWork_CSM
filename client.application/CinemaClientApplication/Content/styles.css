@@ -405,6 +405,7 @@ body {
 .remove-notice {
     position: fixed;
     display: flex;
+    box-shadow: 0 0 10px black;
     flex-direction: column;
     justify-content: center;
     bottom: 0;
@@ -422,5 +423,6 @@ body {
 }
 .remove-notice-close {
     margin-top: 25px;
+    padding: 5px;
     cursor: pointer;
 }
